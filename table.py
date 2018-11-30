@@ -49,18 +49,14 @@ class TableFrame(Frame):
             titles=self.__col_names,
             name='Table'
         )
+
         self.add_layout(layout)
         layout.add_widget(self.__header)
         layout.add_widget(self.__list)
         self.fix()
 
         # Change colours
-        self.palette = defaultdict(
-            lambda: (Screen.COLOUR_WHITE, Screen.A_NORMAL, Screen.COLOUR_BLACK))
-        for key in ["selected_focus_field", "label"]:
-            self.palette[key] = (Screen.COLOUR_WHITE, Screen.A_BOLD, Screen.COLOUR_BLACK)
-        self.palette["title"] = (Screen.COLOUR_BLACK, Screen.A_NORMAL, Screen.COLOUR_WHITE)
-
+        self.set_theme('monochrome')
 
     def process_event(self, event):
         # Do the key handling for this Frame.
