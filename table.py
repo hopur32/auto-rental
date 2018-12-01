@@ -22,11 +22,8 @@ Attributes:
         self.__last_frame
 """
 class TableFrame(Frame):
-    def __init__(self, screen, rows, col_names=None, header_text='TableFrame', spacing=1, has_border=False):
-        if col_names == None:
-            self.__col_names = [str(i+1) for i in range(len(rows[0]))]
-        else:
-            self.__col_names = col_names
+    def __init__(self, screen, rows, col_names, header_text='TableFrame', spacing=1, has_border=False):
+        self.__col_names = col_names
         self.set_rows(rows)
         self.__spacing = spacing
 
