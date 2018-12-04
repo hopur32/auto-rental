@@ -4,7 +4,7 @@ from collections import defaultdict
 from asciimatics.event import KeyboardEvent
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
-from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button
+from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button, PopUpDialog
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene
 
 """
@@ -20,6 +20,7 @@ Attributes:
 class TableFrame(Frame):
     def __init__(self, screen, table, edit_scene, header_text='TableFrame', spacing=1, has_border=False):
         self.table = table
+        self.__screen = screen
         self.__edit_scene = edit_scene
         self.__spacing = spacing
         super().__init__(
@@ -77,9 +78,20 @@ class TableFrame(Frame):
     Delete the selcted row from self.table and redraws the list.
     """
     def _delete(self):
-        self.save()
-        self.table.del_row(self.data['row_index'])
-        self._reload_list()
+        def act_on_selection(selection):
+            if selection == 0: # Yes is selected
+                self.save()
+                self.table.del_row(self.data['row_index'])
+                self._reload_list()
+        popup = PopUpDialog(
+            self.__screen,
+            "Hey dumbass. Are you sure you want to proceed?",
+            ["Yes", "No"],
+            has_shadow=True,
+            on_close=act_on_selection
+        )
+        popup.set_theme('monochrome')
+        self._scene.add_effect(popup)
 
     def _reload_list(self):
         # prev_value = self.__list.value
@@ -94,7 +106,6 @@ class TableFrame(Frame):
         # Here we are editing a private attribute, and must thus be careful.
         # This is not an intended usecase by the module authors.
         self.__list._columns = column_widths
-
 
 """
 Arguments:
