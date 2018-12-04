@@ -7,10 +7,12 @@ from asciimatics.screen import Screen
 from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene
 
-# import logging
-# logging.basicConfig(filename='/tmp/debug.log',level=logging.DEBUG)
+import logging
+logging.basicConfig(filename='/tmp/debug.log',level=logging.DEBUG)
 
 """
+Arguments:
+    
 Attributes:
     Public:
         self.current_row
@@ -21,8 +23,8 @@ Attributes:
         self.__col_names
 """
 class Table():
-    def __init__(self, rows, col_names):
-        self.__col_names = col_names
+    def __init__(self, rows, columns):
+        self.__col_names = columns
         self.set_rows(rows)
         self.current_row = None
 
@@ -50,21 +52,31 @@ class Table():
     Panics:
         Raises valueerror if each row in the list of rows given does not have
         the same length.
+        Raises typeerror if each column does not have the same type in every
+        row.
     """
     def set_rows(self, rows):
-        # First we make sure that each row has the same length
-        first_num_cols = len(rows[0])
+        first_row = rows[0]
+        self.__num_cols = len(first_row)
+        self.__col_types = [type(col) for col in first_row]
         for row in rows[1:]:
-            if not len(row) == first_num_cols:
-                raise ValueError(
-                    'Each row in list of rows does not have the same length'
-                )
-
+            self._assert_valid_row(row)
         self.__rows = rows
-        self.__num_cols = first_num_cols
         self._init_column_widths()
 
+    def _assert_valid_row(self, row):
+        if len(row) != self.__num_cols:
+            raise ValueError(
+                'Each row in list of rows does not have the same length'
+            )
+        row_col_types = [type(col) for col in row]
+        if row_col_types != self.__col_types:
+            raise TypeError(
+                'Each column does not have the same type in every row'
+            )
+
     def set_row(self, row, row_index):
+        self._assert_valid_row(row)
         self.__rows[row_index] = row
         self._update_column_widths([len(col) for col in row])
 
@@ -90,15 +102,7 @@ class Table():
         does not equal self.__num_cols.
     """
     def add_row(self, row):
-        # First we make sure that the number of columns in given row
-        # equals self.__num_cols.
-        num_given_cols = len(row)
-        if not num_given_cols == self.__num_cols:
-            raise ValueError(
-                'Given row has an invalid number of columns; got {}, expected {}'.format(
-                num_given_cols, self.__num_cols
-            ))
-
+        self._assert_valid_row(row)
         self.__rows.append(row)
         self._update_column_widths([len(col) for col in row])
 
@@ -140,10 +144,9 @@ Attributes:
         self.table
     Private:
         self.__spacing
-
         self.__header
         self.__list
-        self.__last_frame
+        self.__edit_scene
 """
 class TableFrame(Frame):
     def __init__(self, screen, table, edit_scene, header_text='TableFrame', spacing=1, has_border=False):
@@ -223,6 +226,14 @@ class TableFrame(Frame):
         # This is not an intended usecase by the module authors.
         self.__list._columns = column_widths
 
+
+"""
+Arguments:
+    screen (Screen): The screen that owns this frame.
+    table (Table): The Table() class instance that contains the data to be edited.
+    table_scene (str): The name of the scene to go to when exiting this frame.
+    fields ([ITEM]): List of 
+"""
 class EditFrame(Frame):
     def __init__(self, screen, table, table_scene, field_names):
         self.table = table
@@ -243,7 +254,7 @@ class EditFrame(Frame):
         bottom_layout = Layout([1, 1, 1, 1])
         self.add_layout(bottom_layout)
         bottom_layout.add_widget(Button("OK", self._ok), 0)
-        bottom_layout.add_widget(Button("Cancel", self._ok), 3)
+        bottom_layout.add_widget(Button("Cancel", self._cancel), 3)
 
         self.fix()
         self.set_theme('monochrome')
@@ -266,10 +277,9 @@ class EditFrame(Frame):
     def _ok(self):
         self.save()
         self.table.edit_current_row(list(self.data.values()))
-        raise NextScene(self.__table_scene)
+        self._cancel()
 
-    @staticmethod
-    def _cancel():
+    def _cancel(self):
         raise NextScene(self.__table_scene)
 
 
