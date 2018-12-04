@@ -1,0 +1,4 @@
+int|int|str
+Aldur|Hæð|Nafn
+19|186|Viktor
+18|189|Árni
