@@ -13,7 +13,7 @@ class Data():
                 rows = data.readlines()
                 for i in range(len(rows)):
                     rows[i] = rows[i].strip().split(DELIM)
-                return types, header, rows
+            return types, header, rows
         except:
             return [], [], [[]]
     def append(self, savedata):
