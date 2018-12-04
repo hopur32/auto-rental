@@ -1,3 +1,5 @@
+DELIM = '|'
+
 class Data():
     'Takes a filename (without file extension) from the savedata folder as input'
     def __init__(self, path):
@@ -6,13 +8,13 @@ class Data():
     def load(self):
         try:
             with open("savedata/" + self.path + ".txt", "r", encoding = "utf-8") as data:
-                types = data.readline().strip().split('|')
-                header = data.readline().strip().split('|')
+                types = data.readline().strip().split(DELIM)
+                header = data.readline().strip().split(DELIM)
                 rows = data.readlines()
                 for i in range(len(rows)):
-                    rows[i] = rows[i].strip().split('|')
+                    rows[i] = rows[i].strip().split(DELIM)
                 return types, header, rows
-        except IndexError:
+        except:
             return [], [], [[]]
     def append(self, savedata):
         with open("savedata/" + self.path + ".csv", "a+") as csvfile:
