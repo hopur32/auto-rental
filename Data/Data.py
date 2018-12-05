@@ -1,3 +1,5 @@
+from datetime import datetime
+
 DELIM = '|'
 
 class Data():
@@ -13,21 +15,35 @@ class Data():
                 rows = data.readlines()
                 for i in range(len(rows)):
                     rows[i] = rows[i].strip().split(DELIM)
-                return types, header, rows
+                rows = self.typify(types, rows)
+            return types, header, rows
         except:
             return [], [], [[]]
     def append(self, savedata):
-        with open("savedata/" + self.path + ".csv", "a+") as csvfile:
-            pass
+        with open("savedata/" + self.path + ".txt", "a+") as data:
+            to_save = [str(i) for i in savedata]
+            data.write(DELIM.join(to_save) + "\n")
     def overwrite(self, savedata):
-        with open("savedata/" + self.path + ".csv", "w") as csvfile:
+        with open("savedata/" + self.path + ".txt", "w") as data:
             pass
+    def typify(self, types, values):
+        "Convert a list of lists of values into the correct types"
+        for i in range(len(values)):
+            for j in range(len(types)):
+                if types[j] == "int":
+                    values[i][j] = int(values[i][j])
+                elif types[j] == "str":
+                    pass
+                elif types[j] == "date":
+                    year, month, day = [int(k) for k in values[i][j].split(':')]
+                    values[i][j] = datetime(year, month, day)
+        return values
     def __str__(self):
         s = " ".join(self.__types)
         s += "\n" + " ".join(self.__col_names)
         for i in self.rows:
             s += "\n"
-            s += " ".join(i)
+            s += " ".join([str(j) for j in i])
         return s
 
 d = Data("Vehicles")

@@ -1,4 +1,7 @@
-int|int|str
-Aldur|Hæð|Nafn
-19|186|Viktor
-18|189|Árni
+int|int|str|date
+Aldur|Hæð|Nafn|Fæðingardagur
+19|186|Viktor|1999:06:15
+18|189|Árni|2000:01:01
+19|175|Efa|1999:08:05
+19|175|Efa|1999:08:06
+19|175|Efa|1999:08:07
