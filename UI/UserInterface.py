@@ -8,6 +8,8 @@ from asciimatics.screen import Screen
 from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button, PopUpDialog, DatePicker, CheckBox
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene
 
+from Domain.Table import Row
+
 
 """
 Attributes:
@@ -38,7 +40,7 @@ class TableFrame(Frame):
         # List of rows
         self.__list = MultiColumnListBox(
             Widget.FILL_FRAME,
-            [w + self.__spacing for w in self.table.get_column_widths()],
+            self.table.get_column_widths(self.__spacing),
             [],
             titles=self.table.get_column_names(),
             name='row_index'
@@ -98,18 +100,8 @@ class TableFrame(Frame):
     def _reload_list(self):
         # prev_value = self.__list.value
         # prev_start_line = self.__list.start_line
-        list_data = []
-        for i, row in enumerate(self.table.get_rows()):
-            new_row = []
-            for col_type, col in zip(self.table.get_column_types(), row):
-                if col_type == datetime:
-                    new_col = str(col.date())
-                else:
-                    new_col = str(col)
-                new_row.append(new_col)
-            list_data.append((new_row, i))
-
-        column_widths = [w + self.__spacing for w in self.table.get_column_widths()]
+        list_data = [(row.display(), i) for i, row in enumerate(self.table.get_rows())]
+        column_widths = self.table.get_column_widths(self.__spacing)
 
         self.__list.options = list_data
         # self.__list.value = prev_value
@@ -123,7 +115,6 @@ Arguments:
     screen (Screen): The screen that owns this frame.
     table (Table): The Table() class instance that contains the data to be edited.
     table_scene (str): The name of the scene to go to when exiting this frame.
-    fields ([ITEM]): List of 
 """
 class EditFrame(Frame):
     def __init__(self, screen, table, table_scene):
@@ -162,7 +153,7 @@ class EditFrame(Frame):
     #       dicts, so this is not needed anymore.
     def _field_dict_from_row(self, row):
         field_dict = {}
-        for field_name, field in zip(self.table.get_column_names(), row):
+        for field_name, field in zip(self.table.get_column_names(), row.am_compatible()):
             field_dict[field_name] = field
         return field_dict
 
@@ -175,7 +166,7 @@ class EditFrame(Frame):
 
     def _ok(self):
         self.save()
-        self.table.edit_current_row(list(self.data.values()))
+        self.table.edit_current_row(Row(self.data.values()))
         self._cancel()
 
     def _cancel(self):
