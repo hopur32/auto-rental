@@ -1,6 +1,15 @@
+from datetime import datetime
+
+def width(column):
+    if type(column) == datetime:
+        string = str(column.date())
+    else:
+        string = str(column)
+    return len(string)
+
 """
 Arguments:
-    
+
 Attributes:
     Public:
         self.current_row
@@ -9,6 +18,7 @@ Attributes:
         self.__num_cols
         self.__col_widths
         self.__col_names
+        self.__col_types
 """
 class Table():
     def __init__(self, rows, columns):
@@ -66,7 +76,7 @@ class Table():
     def set_row(self, row, row_index):
         self._assert_valid_row(row)
         self.__rows[row_index] = row
-        self._update_column_widths([len(col) for col in row])
+        self._update_column_widths([width(col) for col in row])
 
     def edit_current_row(self, row):
         if self.current_row == None:
@@ -92,7 +102,7 @@ class Table():
     def add_row(self, row):
         self._assert_valid_row(row)
         self.__rows.append(row)
-        self._update_column_widths([len(col) for col in row])
+        self._update_column_widths([width(col) for col in row])
 
     # Column widths:
     # --------------------------------------------------------------------------
@@ -106,7 +116,7 @@ class Table():
 
         widths = []
         for i in range(self.__num_cols):
-            widths_in_col_i = [len(row[i]) for row in rows]
+            widths_in_col_i = [width(str(row[i])) for row in rows]
             biggest_width_in_col_i = max(widths_in_col_i)
             widths.append(biggest_width_in_col_i)
 
@@ -122,6 +132,9 @@ class Table():
     # --------------------------------------------------------------------------
     def get_column_names(self):
         return self.__col_names
+
+    def get_column_types(self):
+        return self.__col_types
 
     def get_num_columns(self):
         return self.__num_cols

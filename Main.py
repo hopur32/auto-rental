@@ -5,14 +5,15 @@ from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError
 
-rows = [[str(i)+'dstndtns', str(i+1)+'12312312', str(i+2)+'tsdndtns']
-        for i in range(0, 100, 3)]
+from datetime import datetime
+rows = [['3110002920', 'Árni', 'Dagur', True, datetime(2000, 10, 31)],
+        ['1506995079', 'Viktor', 'Máni', False, datetime.now()]]
 
-table = Table(rows, ['one', 'two', 'three'])
+table = Table(rows, ['Kennitala', 'First Name', 'Last name', 'Is awesome', 'DOB'])
 def demo(screen):
     screen.play([
         Scene([TableFrame(screen, table, 'edit')], -1, name='table'),
-        Scene([EditFrame(screen, table, 'table', table.get_column_names())], -1, name='edit')
+        Scene([EditFrame(screen, table, 'table')], -1, name='edit')
     ], stop_on_resize=True)
 
 while True:
