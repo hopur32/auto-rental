@@ -152,13 +152,23 @@ class Table():
         row.
     """
     def set_rows(self, rows):
+        rows = [Row(row) if not isinstance(row, Row) else row for row in rows]
+
         first_row = rows[0]
         self.__num_cols = len(first_row)
         self.__col_types = first_row.types()
+
         for row in rows[1:]:
             self._assert_valid_row(row)
         self.__rows = rows
         self._init_column_widths()
+
+    def set_row(self, row, row_index):
+        if not isinstance(row, Row):
+            row = Row(row)
+        self._assert_valid_row(row)
+        self.__rows[row_index] = row
+        self._update_column_widths(row.widths())
 
     def _assert_valid_row(self, row):
         if len(row) != self.__num_cols:
@@ -169,11 +179,6 @@ class Table():
             raise TypeError(
                 'Each column does not have the same type in every row'
             )
-
-    def set_row(self, row, row_index):
-        self._assert_valid_row(row)
-        self.__rows[row_index] = row
-        self._update_column_widths(row.widths())
 
     def edit_current_row(self, row):
         if self.current_row == None:
@@ -200,6 +205,8 @@ class Table():
         does not equal self.__num_cols.
     """
     def add_row(self, row):
+        if not isinstance(row, Row):
+            row = Row(row)
         self._assert_valid_row(row)
         self.__rows.append(row)
         self._update_column_widths(row.widths())
@@ -222,7 +229,11 @@ class Table():
         self._update_column_widths([len(name) for name in self.get_column_names()])
 
     def _update_column_widths(self, new_row_widths):
-        self.__col_widths = [max(new, old) for new, old in zip(new_row_widths, self.__col_widths)]
+        try:
+            self.__col_widths = [max(new, old) for new, old in zip(new_row_widths, self.__col_widths)]
+        except AttributeError:
+            # This is the first time we're setting the attribute
+            self.__col_widths = new_row_widths
 
     def get_column_widths(self, spacing=0):
         widths = self.__col_widths
