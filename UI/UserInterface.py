@@ -85,7 +85,8 @@ class TableFrame(Frame):
         def act_on_selection(selection):
             if selection == 0: # Yes is selected
                 self.save()
-                self.table.del_row(self.data['row_index'])
+                self.table.current_row = self.data['row_index']
+                self.table.del_current_row()
                 self._reload_list()
         popup = PopUpDialog(
             self.__screen,
@@ -141,10 +142,11 @@ class EditFrame(Frame):
                 widget = Text(label=field_name, name=field_name)
             main_layout.add_widget(widget)
 
-        bottom_layout = Layout([1, 1, 1, 1])
+        bottom_layout = Layout([1, 1, 1])
         self.add_layout(bottom_layout)
         bottom_layout.add_widget(Button("OK", self._ok), 0)
-        bottom_layout.add_widget(Button("Cancel", self._cancel), 3)
+        bottom_layout.add_widget(Button("Reset", self.reset), 1)
+        bottom_layout.add_widget(Button("Cancel", self._cancel), 2)
 
         self.fix()
         self.set_theme('monochrome')
