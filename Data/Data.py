@@ -6,7 +6,7 @@ class Data():
     'Takes a filename (without file extension) from the savedata folder as input'
     def __init__(self, path):
         self.path = path
-        self.__types, self.__col_names, self.rows = self.load()
+        self.__types, self.__col_names, self.__ rows = self.load()
     def load(self):
         try:
             with open("savedata/" + self.path + ".txt", "r", encoding = "utf-8") as data:
@@ -21,7 +21,12 @@ class Data():
             return [], [], [[]]
     def append(self, savedata):
         with open("savedata/" + self.path + ".txt", "a+", encoding = "utf-8") as data:
-            to_save = [str(i) for i in savedata]
+            to_save = []
+            for value in savedata:
+                if type(value) == datetime:
+                    to_save.append(str(value.date()))
+                else:
+                    to_save.append(str(value))
             data.write(DELIM.join(to_save) + "\n")
     def overwrite(self, header, savedata):
         with open("savedata/" + self.path + ".txt", "w", encoding = 'utf-8') as data:
@@ -34,9 +39,8 @@ class Data():
                     data.write('str')
                 elif type(savedata[0][i]) == int:
                     data.write('int')
-            data.write('\n' + DELIM.join(header))
+            data.write('\n' + DELIM.join(header) + '\n')
             for i in savedata:
-                data.write('\n')
                 for j in range(len(i)):
                     if j != 0:
                         data.write(DELIM)
@@ -44,8 +48,7 @@ class Data():
                         data.write(str(i[j].date()))
                     else:
                         data.write(str(i[j]))
-    def get_header(self):
-        return self.__col_names
+                data.write('\n')
     def typify(self, types, values):
         "Convert a list of lists of values into the correct types"
         for i in range(len(values)):
@@ -58,14 +61,3 @@ class Data():
                     year, month, day = [int(k) for k in values[i][j].split('-')]
                     values[i][j] = datetime(year, month, day)
         return values
-    def __str__(self):
-        s = " ".join(self.__types)
-        s += "\n" + " ".join(self.__col_names)
-        for row in self.rows:
-            s += "\n"
-            s += DELIM.join([str(col) for col in row])
-        return s
-
-d = Data("Vehicles")
-print(d)
-d.overwrite(d.get_header(), d.rows)
