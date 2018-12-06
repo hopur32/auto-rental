@@ -26,6 +26,11 @@ class Data():
             for value in newdata:
                 if type(value) == datetime:
                     to_save.append(str(value.date()))
+                elif type(value) == bool:
+                    if value == False:
+                        to_save.append('')
+                    else:
+                        to_save.append('True')
                 else:
                     to_save.append(str(value))
             data.write(DELIM.join(to_save) + "\n")
@@ -40,15 +45,24 @@ class Data():
                     data.write('str')
                 elif type(savedata[0][i]) == int:
                     data.write('int')
+                elif type(savedata[0][i]) == bool:
+                    data.write('bool')
+                elif type(savedata[0][i]) == float:
+                    data.write('float')
             data.write('\n' + DELIM.join(header) + '\n')
-            for i in savedata:
-                for j in range(len(i)):
-                    if j != 0:
+            for row in savedata:
+                for index in range(len(i)):
+                    if index != 0:
                         data.write(DELIM)
-                    if type(i[j]) == datetime:
-                        data.write(str(i[j].date()))
+                    if type(row[index]) == datetime:
+                        data.write(str(row[index].date()))
+                    elif type(row[index]) == bool:
+                        if row[index] == False:
+                            pass
+                        else:
+                            data.write(str(row[index]))
                     else:
-                        data.write(str(i[j]))
+                        data.write(str(row[index]))
                 data.write('\n')
     def typify(self, types, values):
         "Convert a list of lists of values into the correct types"
@@ -56,6 +70,10 @@ class Data():
             for j in range(len(types)):
                 if types[j] == "int":
                     values[i][j] = int(values[i][j])
+                elif types[j] == "float":
+                    values[i][j] = float(values[i][j])
+                elif types[j] == "bool":
+                    values[i][j] = bool(values[i][j])
                 elif types[j] == "str":
                     pass
                 elif types[j] == "date":
