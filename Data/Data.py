@@ -20,12 +20,32 @@ class Data():
         except:
             return [], [], [[]]
     def append(self, savedata):
-        with open("savedata/" + self.path + ".txt", "a+") as data:
+        with open("savedata/" + self.path + ".txt", "a+", encoding = "utf-8") as data:
             to_save = [str(i) for i in savedata]
             data.write(DELIM.join(to_save) + "\n")
-    def overwrite(self, savedata):
-        with open("savedata/" + self.path + ".txt", "w") as data:
-            pass
+    def overwrite(self, header, savedata):
+        with open("savedata/" + self.path + ".txt", "w", encoding = 'utf-8') as data:
+            for i in range(len(savedata[0])):
+                if i != 0:
+                    data.write(DELIM)
+                if type(savedata[0][i]) == datetime:
+                    data.write('date')
+                elif type(savedata[0][i]) == str:
+                    data.write('str')
+                elif type(savedata[0][i]) == int:
+                    data.write('int')
+            data.write('\n' + DELIM.join(header))
+            for i in savedata:
+                data.write('\n')
+                for j in range(len(i)):
+                    if j != 0:
+                        data.write(DELIM)
+                    if type(i[j]) == datetime:
+                        data.write(str(i[j].date()))
+                    else:
+                        data.write(str(i[j]))
+    def get_header(self):
+        return self.__col_names
     def typify(self, types, values):
         "Convert a list of lists of values into the correct types"
         for i in range(len(values)):
@@ -35,16 +55,17 @@ class Data():
                 elif types[j] == "str":
                     pass
                 elif types[j] == "date":
-                    year, month, day = [int(k) for k in values[i][j].split(':')]
+                    year, month, day = [int(k) for k in values[i][j].split('-')]
                     values[i][j] = datetime(year, month, day)
         return values
     def __str__(self):
         s = " ".join(self.__types)
         s += "\n" + " ".join(self.__col_names)
-        for i in self.rows:
+        for row in self.rows:
             s += "\n"
-            s += " ".join([str(j) for j in i])
+            s += DELIM.join([str(col) for col in row])
         return s
 
 d = Data("Vehicles")
 print(d)
+d.overwrite(d.get_header(), d.rows)
