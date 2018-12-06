@@ -51,7 +51,7 @@ class Data():
                     data.write('float')
             data.write('\n' + DELIM.join(header) + '\n')
             for row in savedata:
-                for index in range(len(i)):
+                for index in range(len(row)):
                     if index != 0:
                         data.write(DELIM)
                     if type(row[index]) == datetime:
