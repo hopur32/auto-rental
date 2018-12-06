@@ -1,7 +1,7 @@
 class Graph:
 
     def __init__(self,names_of_x=   ['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt','Nov', 'Dec'], 
-                    values=         [   17,   21,   35,      21,      8,         46,     29,    77,    77,     23,   98,    102], 
+                    values=         [   17,   21,   35,      21,      0,         46,     29,    77,    77,     23,   98,    102], 
                     xspace=5,yspace=2):
         
         'Names of x can not bee longer than 5 characters'
@@ -31,8 +31,8 @@ class Graph:
     def get_taple(self):
     
 
-        for i in range((self.size),0,-1):
-            line_str_in_tapel='{:>5}|'.format(i*self.jump)+' '*(self.lentapel)
+        for i in range((self.size),-1,-1):
+            line_str_in_tapel='{:>5}│'.format(i*self.jump)+' '*(self.lentapel)
             line_in_tapel=[[x]for x in line_str_in_tapel]
             self.taple.append(line_in_tapel)
 
@@ -83,7 +83,7 @@ class Histogram(Graph):
 
         for value in self.values:
             inn+=5+self.xspace
-            for i in range(size,0,-1):
+            for i in range(size+1,0,-1):
                 if ((size+1)*jump-value)<=(i*jump):   
                     self.taple[i][inn]='█'
                 elif value%jump> jump/2: 
@@ -118,12 +118,15 @@ class Columgraph(Graph):
 
         for value in self.values:
             inn+=self.maxlen+self.xspace
-            for i in range(size,0,-1):
+            for i in range(size+1,0,-1):
                 if ((size+1)*jump-value)<=(i*jump):   
                     self.taple[i][inn:(inn+self.maxlen+self.xspace)]='█'*(self.maxlen+self.xspace)
                 elif value%jump> jump/2: 
                     self.taple[i][inn:(inn+self.maxlen+self.xspace)]='▄'*(self.maxlen+self.xspace)
                     break
+
+
+
 class Linegram(Graph):
 
     '''
@@ -177,7 +180,7 @@ class Linegram(Graph):
             D     E     F     G     
         '''
 
-    def __init__(self, type_of_line='S'):
+    def __init__(self, type_of_line='A'):
         '''Type of line S= stars'*', A= arrowes '🡒 🡕 🡖', L= lines '/\-' '''
 
         Graph.__init__(self)
@@ -194,7 +197,7 @@ class Linegram(Graph):
         for value in self.values:
 
             inn+=5+self.xspace
-            for i in range(size+1):
+            for i in range(size+2):
                 if ((size+1)*jump-value)<=(i*jump):   
                     self.taple[i][inn]='O'
                     listi_staðsettninga.append((i,inn))
@@ -219,7 +222,7 @@ class Linegram(Graph):
                     elif int(tala)<0:
                         self.taple[int(i+tala)][inn-j]="🡖"
                     elif int(tala)==0:
-                        self.taple[int(i+tala)][inn-j]='🡒'
+                        self.taple[int(i+tala)][inn-j]='━'
 
             #Með línum
                 elif self.type_of_line=='L':
@@ -265,10 +268,18 @@ class Piechart:
 
         
     
+# linurit=Linegram(type_of_line=	'S')
+# linurit.update_taple()
+# print(str(linurit))
+# linurit=Linegram(type_of_line=	'L')
+# linurit.update_taple()
+# print(str(linurit))
+
 
 linurit=Linegram()
 linurit.update_taple()
 print(str(linurit))
+
 
 súlurit=Histogram()
 súlurit.update_taple()
