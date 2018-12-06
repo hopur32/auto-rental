@@ -6,7 +6,7 @@ class Data():
     'Takes a filename (without file extension) from the savedata folder as input'
     def __init__(self, path):
         self.path = path
-        self.__types, self.__col_names, self.__ rows = self.load()
+        self.__types, self.__col_names, self.__rows = self.load()
     def load(self):
         try:
             with open("savedata/" + self.path + ".txt", "r", encoding = "utf-8") as data:
@@ -19,10 +19,11 @@ class Data():
             return types, header, rows
         except:
             return [], [], [[]]
-    def append(self, savedata):
-        with open("savedata/" + self.path + ".txt", "a+", encoding = "utf-8") as data:
+    def append(self, newdata):
+        with open("savedata/" + self.path + ".txt", "a", encoding = "utf-8") as data:
             to_save = []
-            for value in savedata:
+            self.__rows.append(newdata)
+            for value in newdata:
                 if type(value) == datetime:
                     to_save.append(str(value.date()))
                 else:
@@ -61,3 +62,10 @@ class Data():
                     year, month, day = [int(k) for k in values[i][j].split('-')]
                     values[i][j] = datetime(year, month, day)
         return values
+    def get_col_names(self):
+        return self.__col_names
+    def get_rows(self):
+        return self.__rows
+    def remove_row(self, index):
+        self.__rows.pop(index)
+        self.overwrite(self.__col_names, self.__rows)
