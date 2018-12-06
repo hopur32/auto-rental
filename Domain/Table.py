@@ -1,5 +1,8 @@
 from datetime import datetime
 
+# import logging
+# logging.basicConfig(filename='/tmp/debug.log',level=logging.DEBUG)
+
 class Column():
     def __init__(self, value):
         self.set_value(value)
@@ -12,6 +15,10 @@ class Column():
 
     def type(self):
         return type(self.__value)
+
+    def set_type(self, type_constructor):
+        if not type_constructor == self.type():
+            self.__value = type_constructor(self.__value)
 
     def am_compatible(self):
         if self.type() in (bool, datetime):
@@ -37,6 +44,7 @@ class Column():
 
     def __repr__(self):
         return 'Col({})'.format(self.value().__repr__())
+
 
 class Row():
     def __init__(self, columns):
@@ -67,6 +75,10 @@ class Row():
 
     def types(self):
         return [col.type() for col in self.columns()]
+
+    def set_types(self, types):
+        for col, t in zip(self.__columns, types):
+            col.set_type(t)
 
     def __len__(self):
         return len(self.columns())
@@ -176,6 +188,9 @@ class Table():
         if row_index != None:
             del self.__rows[row_index]
             self._init_column_widths()
+
+    def del_current_row(self):
+        self.del_row(self.current_row)
 
     """
     Add a row to table.

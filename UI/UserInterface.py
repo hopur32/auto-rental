@@ -168,7 +168,9 @@ class EditFrame(Frame):
 
     def _ok(self):
         self.save()
-        self.table.edit_current_row(Row(self.data.values()))
+        row = Row(self.data.values())
+        row.set_types(self.table.get_column_types())
+        self.table.edit_current_row(row)
         self._cancel()
 
     def _cancel(self):

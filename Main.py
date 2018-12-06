@@ -6,8 +6,8 @@ from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError
 
 from datetime import datetime
-rows = [['3110002920', 'Árni', 'Dagur', True, datetime(2000, 10, 31)],
-        ['1506995079', 'Viktor', 'Máni', False, datetime.now()]]
+rows = [[3110002920, 'Árni', 'Dagur', True, datetime(2000, 10, 31)],
+        [1506995079, 'Viktor', 'Máni', False, datetime.now()]]
 
 rows = [Row([Column(c) for c in r]) for r in rows]
 table = Table(rows, ['Kennitala', 'First Name', 'Last name', 'Is awesome', 'DOB'])
