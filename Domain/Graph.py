@@ -9,7 +9,7 @@ class Graph:
         self.names_of_x, self.values, self.xspace=names_of_x, values,xspace
 
         self.size= size
-        #
+    
         self.table=list()
         self.table.append('\t\t'+name+'\n'*yspace)
         
@@ -292,7 +292,11 @@ name= 'fjöldi lausra bíla á mánuði')
 linurit.update_table()
 print(str(linurit))
 
-
+súlurit=Histogram(names_of_x= ['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt','Nov', 'Dec'], 
+values=         [   17,   21,   35,      21,      0,         46,     29,    77,    77,     23,   98,    102],
+name= 'fjöldi lausra bíla á mánuði', fill= True)
+súlurit.update_table()
+print(str(súlurit))
 
 súlurit=Histogram(names_of_x= ['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt','Nov', 'Dec'], 
 values=         [   17,   21,   35,      21,      0,         46,     29,    77,    77,     23,   98,    102],
