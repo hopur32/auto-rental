@@ -1,24 +1,29 @@
 class Graph:
 
-    def __init__(self,names_of_x=   ['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt','Nov', 'Dec'], 
-                    values=         [   17,   21,   35,      21,      0,         46,     29,    77,    77,     23,   98,    102], 
-                    xspace=5,yspace=2):
-        
-        'Names of x can not bee longer than 5 characters'
+    def __init__(self,name='Name of graf',
+                    names_of_x=   ['A', 'B', 'C'], 
+                    values=         [   17,   21,   35] ,
+                    xspace=5,yspace=2, size=15):
+
         
         self.names_of_x, self.values, self.xspace=names_of_x, values,xspace
 
-        self.size=15
-        self.taple=list()
-        self.taple.append('\n'*yspace)
+        self.size= size
+        #
+        self.table=list()
+        self.table.append('\t\t'+name+'\n'*yspace)
+        
         self.maxvalue=max(values)
 
         heiltölu=self.maxvalue//(self.size)
         self.maxlen=self.find_max_len()
         self.lentapel=(len(self.names_of_x))*self.xspace*2
     #Finna hoppið
-        if (heiltölu)<(self.maxvalue/(self.size)):    self.jump=heiltölu+1
-        else:                                         self.jump=heiltölu
+
+        if (heiltölu)<(self.maxvalue/(self.size)):    
+            self.jump=heiltölu+1
+        else:                                         
+            self.jump=heiltölu
 
 
 
@@ -28,26 +33,26 @@ class Graph:
             if len(i)>max0:  max0=len(i)
         return max0
     
-    def get_taple(self):
+    def get_table(self):
     
 
         for i in range((self.size),-1,-1):
-            line_str_in_tapel='{:>5}│'.format(i*self.jump)+' '*(self.lentapel)
-            line_in_tapel=[[x]for x in line_str_in_tapel]
-            self.taple.append(line_in_tapel)
+            line_str_in_tabel='{:>5}│'.format(i*self.jump)+' '*(self.lentapel)
+            line_in_tabel=[[x]for x in line_str_in_tabel]
+            self.table.append(line_in_tabel)
 
 
-        self.taple.append('▔'*(self.lentapel+self.xspace+4))
+        self.table.append('▔'*(self.lentapel+self.xspace))
         line_with_x_names=' '*(self.xspace+5)
     #Nöfn viðfangsefna á X-ás
         for item in self.names_of_x:
-            line_with_x_names+='{:<5}'.format(item)+' '*self.xspace
-        self.taple.append(line_with_x_names)
+            line_with_x_names+=item.rjust(self.maxlen)+' '*self.xspace
+        self.table.append(line_with_x_names)
 
 
     def __str__(self):
         string1=''
-        for line in self.taple:
+        for line in self.table:
             string0=''
             for letter in line:
                 string0+=letter[0]
@@ -73,59 +78,44 @@ class Histogram(Graph):
             D      E       F      
         '''
 
-    def __init__(self):
-        Graph.__init__(self)
-    def update_taple(self):
+    def __init__(self, name='Name of graph',
+            names_of_x=   ['A', 'B', 'C'], 
+            values=         [ 10,   15, 10] ,
+            xspace=5,yspace=2, fill=False):
+        Graph.__init__(self,name, names_of_x, values, xspace, yspace)
+       
+        self.fill=fill
 
-        Graph.get_taple(self)
+    def get_top_block(self, num):
+        if 0 <= num < 0.25:
+            return ' '
+        elif 0.25 <= num < 0.75:
+            return '▄'
+        elif 0.75 <= num < 1:
+            return '█'
+        else:
+            raise ValueError('Number {} is not 0 <= x < 1'.format(num))
+    
+    def update_table(self):
+
+        Graph.get_table(self)
         jump, size=self.jump, self.size
-        inn=0
+        inn=4
+        if self.fill:
+            breydd=self.maxlen+self.xspace
+        else:
+            breydd=1
 
         for value in self.values:
-            inn+=5+self.xspace
-            for i in range(size+1,0,-1):
+            inn+=self.xspace+self.maxlen
+            for i in range(size,0,-1):
                 if ((size+1)*jump-value)<=(i*jump):   
-                    self.taple[i][inn]='█'
-                elif value%jump> jump/2: 
-                    self.taple[i][inn]='▄'
+                    self.table[i+1][inn:(inn+breydd)]='█'*breydd
+                else:
+                    num= value%jump/jump
+                    block = self.get_top_block(num)
+                    self.table[i+1][inn:(inn+breydd)]= block*breydd
                     break
-class Columgraph(Graph):
-
-    '''
-    60  |    
-    55  |    █
-    50  |    █
-    45  |    █
-    35  |    █
-    30  |    █ 
-    25  |    █       
-    20  |    █  	    
-    15  |    █       
-    10  |   ▄█       
-    5   |   ██
-    0   |   ███
-        _________
-            DEF      
-        '''
-
-    def __init__(self):
-        Graph.__init__(self)
-    def update_taple(self):
-
-        Graph.get_taple(self)
-        jump, size=self.jump, self.size
-        inn=0
-
-        for value in self.values:
-            inn+=self.maxlen+self.xspace
-            for i in range(size+1,0,-1):
-                if ((size+1)*jump-value)<=(i*jump):   
-                    self.taple[i][inn:(inn+self.maxlen+self.xspace)]='█'*(self.maxlen+self.xspace)
-                elif value%jump> jump/2: 
-                    self.taple[i][inn:(inn+self.maxlen+self.xspace)]='▄'*(self.maxlen+self.xspace)
-                    break
-
-
 
 class Linegram(Graph):
 
@@ -180,31 +170,36 @@ class Linegram(Graph):
             D     E     F     G     
         '''
 
-    def __init__(self, type_of_line='A'):
-        '''Type of line S= stars'*', A= arrowes '🡒 🡕 🡖', L= lines '/\-' '''
+    def __init__(self, name='Name of grapph',
+    type_of_line='A',
+    names_of_x=   ['A', 'B', 'C'], 
+    values=       [10,  15,   10] ,
+    xspace=5,yspace=2):
+        '''Type of line S= stars'*', A= arrowes '- 🡕 🡖', L= lines '/\-' '''
 
-        Graph.__init__(self)
+        Graph.__init__(self,name, names_of_x, values, xspace, yspace)
+
         self.type_of_line= type_of_line.upper()
 
-    def update_taple(self):
+    def update_table(self):
         size=self.size
         jump=self.jump
 
-        Graph.get_taple(self)
+        Graph.get_table(self)
 
         listi_staðsettninga=list()
-        inn=0
+        inn=4
         for value in self.values:
 
-            inn+=5+self.xspace
+            inn+=self.maxlen+self.xspace
             for i in range(size+2):
                 if ((size+1)*jump-value)<=(i*jump):   
-                    self.taple[i][inn]='O'
+                    self.table[i][inn]='O'
                     listi_staðsettninga.append((i,inn))
                     break
 
         i1,inn1=listi_staðsettninga.pop(0)
-        #listi_staðsettninga.remove(listi_staðsettninga[-1])
+
         
         for staðsetning in listi_staðsettninga:
             i,inn= staðsetning
@@ -218,48 +213,59 @@ class Linegram(Graph):
             #Með örvum
                 if self.type_of_line=='A':
                     if int(tala)>0:
-                        self.taple[int(i+tala)][inn-j]='🡕'
+                        self.table[int(i+tala)][inn-j]='🡕'
                     elif int(tala)<0:
-                        self.taple[int(i+tala)][inn-j]="🡖"
+                        self.table[int(i+tala)][inn-j]="🡖"
                     elif int(tala)==0:
-                        self.taple[int(i+tala)][inn-j]='━'
+                        self.table[int(i+tala)][inn-j]='━'
 
             #Með línum
                 elif self.type_of_line=='L':
                     if int(tala)>0:
-                        self.taple[int(i+tala)][inn-j]='/'
+                        self.table[int(i+tala)][inn-j]='/'
                     elif int(tala)<0:
-                        self.taple[int(i+tala)][inn-j]="\ "
+                        self.table[int(i+tala)][inn-j]="\ "
                     elif int(tala)==0:
-                        self.taple[int(i+tala)][inn-j]='-'
+                        self.table[int(i+tala)][inn-j]='-'
             #Með stjörnum
                 else:
-                    self.taple[int(i+tala)][inn-j]='*'
+                    self.table[int(i+tala)][inn-j]='*'
 
 class Piechart:
-    def __init__(self, hight=3, lenth=50, stuff_in_piechart=[('Small Cars', '#', 0.55),('Medium Cars', 'o', 0.14), 
-                                                             ('Large Cars', 'X', 0.31)]):            
+    def __init__(self, hight=3, lenth=50, 
+    stuff_in_piechart=[('A', 10),('B', 15), ('C', 10)],
+    character_list='░▒▓█▘╳╬♥♣♦♠#_XO',
+    name='Name of chart'):    
+
             self.hight, self.lenth, self.stuff_in_piechart= hight, lenth, stuff_in_piechart
-            self.taple=''
+            self.character_list= character_list
+            self.table=''
+            self.table+= '\t\t'+name+'\n\n'
+
+            fj_list= [item[1] for item in self.stuff_in_piechart]
+            self.fj = sum(fj_list)
 
     
     def get_chart(self):
-        for item in self.stuff_in_piechart:     self.taple+=('\t{} - {}\n'.format(item[1], item[0]))
-        self.taple+='_'*(self.lenth+len(self.stuff_in_piechart)+2)+'\n'
+        for num in range(len(self.stuff_in_piechart)):     
+            self.table+=('\t{} - {}\n'.format(self.character_list[num],self.stuff_in_piechart[num][0]))
+        self.table+='\n'
+
         for i in range(self.hight): 
-            for item in self.stuff_in_piechart:
-                self.taple+='|'
-                magn=item[2]
-                tákn=item[1]
-                for j in range(int(magn*self.lenth)):
-                    self.taple+= tákn
-                self.taple+='|'
-            self.taple+= '\n'
-        self.taple+='▔'*(self.lenth+len(self.stuff_in_piechart)+1)            
+            for num in range(len(self.stuff_in_piechart)):
+
+                magn= self.stuff_in_piechart[num][1]
+                tákn=self.character_list[num]
+                for j in range(int(magn*self.lenth/self.fj)):
+                    self.table+= tákn
+
+            self.table+= '\n'
+   
     
     def __str__(self):
         string0=''
-        for item in self.taple: string0+=item
+        for item in self.table: 
+            string0+=item
         return string0	  
 
             
@@ -269,26 +275,31 @@ class Piechart:
         
     
 # linurit=Linegram(type_of_line=	'S')
-# linurit.update_taple()
-# print(str(linurit))
-# linurit=Linegram(type_of_line=	'L')
-# linurit.update_taple()
+# linurit.update_table()
 # print(str(linurit))
 
+# súlurit=Histogram(fill=True)
+# súlurit.update_table()
+# print(str(súlurit))
 
-linurit=Linegram()
-linurit.update_taple()
+# skífurit = Piechart()
+# skífurit.get_chart()
+# print(skífurit)
+
+linurit=Linegram(names_of_x= ['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt','Nov', 'Dec'], 
+values=         [   17,   21,   35,      21,      0,         46,     29,    77,    77,     23,   98,    102], 
+name= 'fjöldi lausra bíla á mánuði')
+linurit.update_table()
 print(str(linurit))
 
 
-súlurit=Histogram()
-súlurit.update_taple()
+
+súlurit=Histogram(names_of_x= ['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt','Nov', 'Dec'], 
+values=         [   17,   21,   35,      21,      0,         46,     29,    77,    77,     23,   98,    102],
+name= 'fjöldi lausra bíla á mánuði')
+súlurit.update_table()
 print(str(súlurit))
 
-staplarit=Columgraph()
-staplarit.update_taple()
-print(str(staplarit))
-
-skífurit=Piechart()
+skífurit=Piechart(stuff_in_piechart=[('Small Cars', 55),('Medium Cars', 14), ('Large Cars', 31)], name='Fjöldi lausra bíla í hverjum sterðar flokki')
 skífurit.get_chart()
 print(str(skífurit))
