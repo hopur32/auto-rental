@@ -1,4 +1,6 @@
-int|int|str
-Aldur|Hæð|Nafn
-19|186|Viktor
-18|189|Árni
+int|float|str|date|bool
+Seats|Fuel Usage|Model|Year|Airbags
+2|3.5|Model S|1999-06-15|True
+5|11.6|I30|1999-08-05|
+4|9.4|V60|2000-01-01|
+4|5.2|Spark|2000-01-01|True
