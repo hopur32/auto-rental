@@ -3,6 +3,7 @@ from datetime import datetime
 # import logging
 # logging.basicConfig(filename='/tmp/debug.log',level=logging.DEBUG)
 
+
 class Column():
     def __init__(self, value):
         self.set_value(value)
@@ -105,6 +106,8 @@ class Row():
                 column = col_type()
             columns.append(column)
         return cls(columns)
+
+
 """
 Arguments:
 
@@ -118,6 +121,8 @@ Attributes:
         self.__col_names
         self.__col_types
 """
+
+
 class Table():
     def __init__(self, rows, columns):
         self.__col_names = columns
@@ -129,6 +134,7 @@ class Table():
     """
     Return private attribute self.__rows.
     """
+
     def get_rows(self):
         return self.__rows
 
@@ -136,7 +142,7 @@ class Table():
         return self.__rows[row_index]
 
     def get_current_row(self):
-        if self.current_row == None:
+        if self.current_row is None:
             return Row.default_from_types(self.__col_types)
         else:
             return self.__rows[self.current_row]
@@ -151,6 +157,7 @@ class Table():
         Raises typeerror if each column does not have the same type in every
         row.
     """
+
     def set_rows(self, rows):
         rows = [Row(row) if not isinstance(row, Row) else row for row in rows]
 
@@ -181,7 +188,7 @@ class Table():
             )
 
     def edit_current_row(self, row):
-        if self.current_row == None:
+        if self.current_row is None:
             self.add_row(row)
         else:
             self.set_row(row, self.current_row)
@@ -189,8 +196,9 @@ class Table():
     """
     Delete the row at row_index. Does nothing if row_index == None.
     """
+
     def del_row(self, row_index):
-        if row_index != None:
+        if row_index is not None:
             del self.__rows[row_index]
             self._init_column_widths()
 
@@ -204,6 +212,7 @@ class Table():
         This method raises ValueError if number of columns in given row
         does not equal self.__num_cols.
     """
+
     def add_row(self, row):
         if not isinstance(row, Row):
             row = Row(row)
@@ -217,6 +226,7 @@ class Table():
     Get the widths of the table's columns. This equals the width of the
     largest cell in each column.
     """
+
     def _init_column_widths(self):
         rows = self.__rows
         widths = []
@@ -225,12 +235,15 @@ class Table():
             widths.append(biggest_width)
 
         self.__col_widths = widths
-        # Maybe the column name is larger than every one of the values in the column:
-        self._update_column_widths([len(name) for name in self.get_column_names()])
+        # Maybe the column name is larger than every one of the values in the
+        # column:
+        self._update_column_widths([len(name)
+                                    for name in self.get_column_names()])
 
     def _update_column_widths(self, new_row_widths):
         try:
-            self.__col_widths = [max(new, old) for new, old in zip(new_row_widths, self.__col_widths)]
+            self.__col_widths = [max(new, old) for new, old in zip(
+                new_row_widths, self.__col_widths)]
         except AttributeError:
             # This is the first time we're setting the attribute
             self.__col_widths = new_row_widths

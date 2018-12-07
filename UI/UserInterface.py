@@ -11,7 +11,6 @@ from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene
 from Domain.Table import Row
 
 
-
 """
 Attributes:
     Public:
@@ -22,8 +21,11 @@ Attributes:
         self.__list
         self.__edit_scene
 """
+
+
 class TableFrame(Frame):
-    def __init__(self, screen, table, edit_scene, header_text='TableFrame', spacing=2, has_border=True):
+    def __init__(self, screen, table, edit_scene,
+                 header_text='TableFrame', spacing=2, has_border=True):
         self.table = table
         self.__screen = screen
         self.__edit_scene = edit_scene
@@ -82,9 +84,10 @@ class TableFrame(Frame):
     """
     Delete the selcted row from self.table and redraws the list.
     """
+
     def _delete(self):
         def act_on_selection(selection):
-            if selection == 0: # Yes is selected
+            if selection == 0:  # Yes is selected
                 self.save()
                 self.table.current_row = self.data['row_index']
                 self.table.del_current_row()
@@ -102,7 +105,8 @@ class TableFrame(Frame):
     def _reload_list(self):
         # prev_value = self.__list.value
         # prev_start_line = self.__list.start_line
-        list_data = [(row.display(), i) for i, row in enumerate(self.table.get_rows())]
+        list_data = [(row.display(), i)
+                     for i, row in enumerate(self.table.get_rows())]
         column_widths = self.table.get_column_widths(self.__spacing)
 
         self.__list.options = list_data
@@ -112,12 +116,15 @@ class TableFrame(Frame):
         # This is not an intended usecase by the module authors.
         self.__list._columns = column_widths
 
+
 """
 Arguments:
     screen (Screen): The screen that owns this frame.
     table (Table): The Table() class instance that contains the data to be edited.
     table_scene (str): The name of the scene to go to when exiting this frame.
 """
+
+
 class EditFrame(Frame):
     def __init__(self, screen, table, table_scene):
         self.table = table
@@ -131,15 +138,22 @@ class EditFrame(Frame):
 
         main_layout = Layout([100], fill_frame=True)
         self.add_layout(main_layout)
-        for field_type, field_name in zip(self.table.get_column_types(), self.table.get_column_names()):
+        for field_type, field_name in zip(
+                self.table.get_column_types(), self.table.get_column_names()):
             if field_type == datetime:
                 widget = DatePicker(label=field_name, name=field_name)
             elif field_type == bool:
                 widget = CheckBox('', label=field_name, name=field_name)
             elif field_type == int:
-                widget = Text(label=field_name, name=field_name, validator='^[0-9]*$')
+                widget = Text(
+                    label=field_name,
+                    name=field_name,
+                    validator='^[0-9]*$')
             elif field_type == float:
-                widget = Text(label=field_name, name=field_name, validator='^[0-9]*\.?[0-9]+$')
+                widget = Text(
+                    label=field_name,
+                    name=field_name,
+                    validator=r'^[0-9]*\.?[0-9]+$')
             else:
                 widget = Text(label=field_name, name=field_name)
             main_layout.add_widget(widget)
@@ -157,7 +171,8 @@ class EditFrame(Frame):
     #       dicts, so this is not needed anymore.
     def _field_dict_from_row(self, row):
         field_dict = {}
-        for field_name, field in zip(self.table.get_column_names(), row.am_compatible()):
+        for field_name, field in zip(
+                self.table.get_column_names(), row.am_compatible()):
             field_dict[field_name] = field
         return field_dict
 
