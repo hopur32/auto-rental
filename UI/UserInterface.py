@@ -6,9 +6,10 @@ from asciimatics.event import KeyboardEvent
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button, PopUpDialog, DatePicker, CheckBox
-from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene
+from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene, InvalidFields
 
 from Domain.Table import Row
+
 
 
 """
@@ -120,6 +121,7 @@ Arguments:
 class EditFrame(Frame):
     def __init__(self, screen, table, table_scene):
         self.table = table
+        self.__screen = screen
         self.__table_scene = table_scene
 
         super().__init__(
@@ -167,11 +169,21 @@ class EditFrame(Frame):
         self.data = self._field_dict_from_row(row)
 
     def _ok(self):
-        self.save()
-        row = Row(self.data.values())
-        row.set_types(self.table.get_column_types())
-        self.table.edit_current_row(row)
-        self._cancel()
+        try:
+            self.save(validate=True)
+            row = Row(self.data.values())
+            row.set_types(self.table.get_column_types())
+            self.table.edit_current_row(row)
+            self._cancel()
+        except InvalidFields:
+            popup = PopUpDialog(
+                self.__screen,
+                'Error: An invalid value vas entered into form',
+                ['OK'],
+                has_shadow=True
+            )
+            popup.set_theme('monochrome')
+            self._scene.add_effect(popup)
 
     def _cancel(self):
         raise NextScene(self.__table_scene)
