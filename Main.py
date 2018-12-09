@@ -16,10 +16,20 @@ customertable = Table(
 orders = [['aeo123ao', 'Lamborgini', True, False]]
 ordertable = Table(orders, ['ID', 'Model', 'Is awesome', 'GPS'])
 
+PRICES = [
+    ['Small cars:', '2.900 ISK', '20.300 ISK', '87.000 ISK', '389.000 ISK'],
+    ['Medium cars:', '3.900 ISK', '27.300 ISK', '117.000 ISK', '489.000 ISK'],
+    ['Large cars:', '4.900 ISK', '34.300 ISK', '147.000 ISK', '598.000 ISK'],
+    ['Jeep:', '5.900 ISK', '41.300 ISK', '177.000 ISK', '998.000 ISK'],
+]
+
+PRICES_TABLE = Table(PRICES, ['', '1 day', '1 week', '1 month', '6 months'])
+
 
 def demo(screen):
     screen.play([
-        Scene([TableFrame(screen, customertable, 'customeredit')], -
+        Scene([TableFrame(screen, PRICES_TABLE, 'pricelist', 'Prices')], -1, name='pricelist'),
+        Scene([TableFrame(screen, customertable, 'customeredit', 'Customers')], -
               1, name='customertable'),
         Scene([EditFrame(screen, customertable, 'customertable')], -
               1, name='customeredit'),
