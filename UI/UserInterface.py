@@ -38,7 +38,14 @@ class TableFrame(Frame):
         )
 
 
-        layout = Layout([1], fill_frame=True)
+        layout = Layout([100])
+        # Search
+        def searching():
+            self.__searching = True
+        def not_searching():
+            self.__searching = False
+        self.__search_box = Text(label='Search:', name='search', on_focus=searching, on_blur=not_searching)
+        self.__search_box._on_change = self._reload_list
         # Header
         self.__header = TextBox(1, as_string=True)
         self.__header.disabled = True
@@ -52,9 +59,9 @@ class TableFrame(Frame):
             titles=self.table.get_column_names(),
             name='row_index'
         )
-
         self.add_layout(layout)
         layout.add_widget(self.__header)
+        layout.add_widget(self.__search_box)
         layout.add_widget(self.__list)
         self.fix()
 
@@ -63,7 +70,7 @@ class TableFrame(Frame):
 
     def process_event(self, event):
         # Do the key handling for this Frame.
-        if isinstance(event, KeyboardEvent):
+        if isinstance(event, KeyboardEvent) and not self.__searching:
             if event.key_code in [ord('q'), ord('Q'), Screen.ctrl('c')]:
                 raise StopApplication("User quit")
             elif event.key_code in [ord('a'), ord('A')]:
@@ -126,6 +133,26 @@ class TableFrame(Frame):
     def _sort_list(self):
         self.__list.options = sorted(self.__list.options, key=lambda x: x[0][self.__sort_index],
                                      reverse=self.__reverse_sort)
+
+    """
+    Pull self.table.get_rows(), filter the results using the search string, then update
+    self.__list.options.
+    """
+    def _update_list_data(self):
+        self.save()
+        try:
+            query = self.data['search'].strip().lower()
+            rows = []
+            for row in self.table.get_rows():
+                row = row.display()
+                for col in row:
+                    if query in col.lower():
+                        rows.append(row)
+                        break
+        except KeyError:
+            rows = [row.display() for row in self.table.get_rows()]
+        self.__list.options = [(row, i) for i, row in enumerate(rows)]
+
     def _get_sort_arrow(self):
         if self.__reverse_sort:
             return '▲ '
@@ -138,10 +165,7 @@ class TableFrame(Frame):
         column_names = self.table.get_column_names()[:]
         column_names[self.__sort_index] = self._get_sort_arrow() + column_names[self.__sort_index]
 
-        list_data = [(row.display(), i)
-                     for i, row in enumerate(self.table.get_rows())]
-
-        self.__list.options = list_data
+        self._update_list_data()
         self._sort_list()
         # Here we are editing private attributes, and must thus be careful.
         # This is not an intended usecase by the module authors.
