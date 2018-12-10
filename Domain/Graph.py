@@ -6,11 +6,12 @@ class Graph:
                  xspace=5, yspace=2, size=15):
 
         self.names_of_x, self.values, self.xspace = names_of_x, values, xspace
+        self.name=name
 
         self.size = size
 
         self.table = list()
-        self.table.append('\t\t' + name + '\n' * yspace)
+        self.table.append(name + '\n' * yspace)
 
         self.maxvalue = max(values)
 
@@ -54,6 +55,8 @@ class Graph:
                 string0 += letter[0]
             string1 += string0 + '\n'
         return string1
+    
+
 
 
 class Histogram(Graph):
@@ -237,8 +240,8 @@ class Piechart:
 
         self.hight, self.lenth, self.stuff_in_piechart = hight, lenth, stuff_in_piechart
         self.character_list = character_list
-        self.table = ''
-        self.table += '\t\t' + name + '\n\n'
+        self.name=name
+        self.table = name + '\n\n'
 
         fj_list = [item[1] for item in self.stuff_in_piechart]
         self.fj = sum(fj_list)
@@ -265,7 +268,6 @@ class Piechart:
             string0 += item
         return string0
 
-
 # linurit=Linegram(type_of_line=	'S')
 # linurit.update_table()
 # print(str(linurit))
@@ -277,33 +279,3 @@ class Piechart:
 # skífurit = Piechart()
 # skífurit.get_chart()
 # print(skífurit)
-
-linurit = Linegram(names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
-                   values=[17, 21, 35, 21, 0, 46, 29, 77, 77, 23, 98, 102],
-                   name='fjöldi lausra bíla á mánuði')
-linurit.update_table()
-print(str(linurit))
-
-súlurit = Histogram(names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
-                    values=[17, 21, 35, 21, 0, 46, 29, 77, 77, 23, 98, 102],
-                    name='fjöldi lausra bíla á mánuði', fill=True)
-súlurit.update_table()
-print(str(súlurit))
-
-súlurit = Histogram(names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
-                    values=[17, 21, 35, 21, 0, 46, 29, 77, 77, 23, 98, 102],
-                    name='fjöldi lausra bíla á mánuði')
-súlurit.update_table()
-print(str(súlurit))
-
-skífurit = Piechart(
-    stuff_in_piechart=[
-        ('Small Cars',
-         55),
-        ('Medium Cars',
-         14),
-        ('Large Cars',
-         31)],
-    name='Fjöldi lausra bíla í hverjum sterðar flokki')
-skífurit.get_chart()
-print(str(skífurit))
