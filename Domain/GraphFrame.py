@@ -56,7 +56,7 @@ class DemoFrame(Frame):
 
         layout = Layout([1], fill_frame=True)
         self.add_layout(layout)
-        self._graph = TextBox(25, name='graph', as_string=True)
+        self._graph = TextBox(25, name='graph', as_string=True, )
         self._graph.disabled = True     
 
         self._graph.custom_colour= 'label'
