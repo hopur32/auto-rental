@@ -25,12 +25,7 @@ ordertable = Table(
     [str, str, str, datetime, datetime, str, str]
 )
 
-# PRICES = [
-#     ['Small cars:', '2.900 ISK', '20.300 ISK', '87.000 ISK', '389.000 ISK'],
-#     ['Medium cars:', '3.900 ISK', '27.300 ISK', '117.000 ISK', '489.000 ISK'],
-#     ['Large cars:', '4.900 ISK', '34.300 ISK', '147.000 ISK', '598.000 ISK'],
-#     ['Jeep:', '5.900 ISK', '41.300 ISK', '177.000 ISK', '998.000 ISK'],
-# ]
+
 # PRICE_LIST= [
 # ['Small Car', '2900 ISK', '20300 ISK', '87000 ISK', '527800 ISK']
 # ['Medium car', '3900 ISK', '27300 ISK', '117000 ISK', '709800 ISK']
