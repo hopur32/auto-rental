@@ -268,7 +268,6 @@ class Piechart:
             string0 += item
         return string0
 
-
 # linurit=Linegram(type_of_line=	'S')
 # linurit.update_table()
 # print(str(linurit))
