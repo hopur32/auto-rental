@@ -221,13 +221,16 @@ class Data():
     def set_rows(self, rows):
         rows = [Row(row) if not isinstance(row, Row) else row for row in rows]
 
-        first_row = rows[0]
-        self.__num_cols = len(first_row)
-        self.__col_types = first_row.types()
+        if rows:
+            first_row = rows[0]
+            self.__num_cols = len(first_row)
+            self.__col_types = first_row.types()
 
-        for row in rows[1:]:
-            self._assert_valid_row(row)
-        self.__rows = rows
+            for row in rows[1:]:
+                self._assert_valid_row(row)
+            self.__rows = rows
+        else:
+            self.__rows = []
 
     """
     Validates input and overwrites the row at index `row_index`` in self.__rows.
