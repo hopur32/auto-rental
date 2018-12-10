@@ -77,11 +77,9 @@ class TableFrame(Frame):
                 self._reload_list()
             elif event.key_code == ord("<"):
                 self.__sort_index = max(0, self.__sort_index - 1)
-                self.__header.value = str(self.__sort_index)
                 self._reload_list()
             elif event.key_code == ord(">"):
                 self.__sort_index = min(self.table.get_num_columns() - 1, self.__sort_index + 1)
-                self.__header.value = str(self.__sort_index)
                 self._reload_list()
 
         # Now pass on to lower levels for normal handling of the event.
@@ -105,8 +103,16 @@ class TableFrame(Frame):
             if selection == 0:  # Yes is selected
                 self.save()
                 self.table.current_row = self.data['row_index']
+                # Save the current row number before we delete
+                current_row = self.table.current_row
                 self.table.del_current_row()
                 self._reload_list()
+                # Put focus to the row at the index we deleted
+                num_rows = len(self.table.get_rows())
+                if num_rows != 0:
+                    self.__list.value = min(num_rows - 1, current_row)
+                else:
+                    self.__list.value = None
         popup = PopUpDialog(
             self.__screen,
             "Hey dumbass. Are you sure you want to proceed?",
@@ -127,8 +133,6 @@ class TableFrame(Frame):
             return '▼ '
 
     def _reload_list(self):
-        # prev_value = self.__list.value
-        # prev_start_line = self.__list.start_line
         column_widths = self.table.get_column_widths(self.__spacing)[:]
         column_widths[self.__sort_index] += len(self._get_sort_arrow())
         column_names = self.table.get_column_names()[:]
@@ -139,9 +143,7 @@ class TableFrame(Frame):
 
         self.__list.options = list_data
         self._sort_list()
-        # self.__list.value = prev_value
-        # self.__list.start_line = prev_start_line
-        # Here we are editing a private attribute, and must thus be careful.
+        # Here we are editing private attributes, and must thus be careful.
         # This is not an intended usecase by the module authors.
         self.__list._columns = column_widths
         self.__list._titles = column_names
