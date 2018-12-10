@@ -25,15 +25,19 @@ Attributes:
 
 class TableFrame(Frame):
     def __init__(self, screen, table, edit_scene,
-                 header_text='TableFrame', spacing=2, has_border=True):
+                 header_text='TableFrame', spacing=2, has_border=True, reverse_sort=False, sort_index=0):
         self.table = table
         self.__screen = screen
         self.__edit_scene = edit_scene
         self.__spacing = spacing
+        self.__reverse_sort = reverse_sort
+        self.__sort_index = sort_index
         super().__init__(
             screen, screen.height, screen.width, has_border=has_border,
             name=header_text, on_load=self._reload_list
         )
+
+
         layout = Layout([1], fill_frame=True)
         # Header
         self.__header = TextBox(1, as_string=True)
@@ -68,6 +72,17 @@ class TableFrame(Frame):
                 self._edit()
             elif event.key_code in [ord('d'), ord('D')]:
                 self._delete()
+            elif event.key_code in [ord("r"), ord("R")]:
+                self.__reverse_sort = not self.__reverse_sort
+                self._reload_list()
+            elif event.key_code == ord("<"):
+                self.__sort_index = max(0, self.__sort_index - 1)
+                self.__header.value = str(self.__sort_index)
+                self._reload_list()
+            elif event.key_code == ord(">"):
+                self.__sort_index = min(self.table.get_num_columns() - 1, self.__sort_index + 1)
+                self.__header.value = str(self.__sort_index)
+                self._reload_list()
 
         # Now pass on to lower levels for normal handling of the event.
         return super().process_event(event)
@@ -102,19 +117,34 @@ class TableFrame(Frame):
         popup.set_theme('monochrome')
         self._scene.add_effect(popup)
 
+    def _sort_list(self):
+        self.__list.options = sorted(self.__list.options, key=lambda x: x[0][self.__sort_index],
+                                     reverse=self.__reverse_sort)
+    def _get_sort_arrow(self):
+        if self.__reverse_sort:
+            return '▲ '
+        else:
+            return '▼ '
+
     def _reload_list(self):
         # prev_value = self.__list.value
         # prev_start_line = self.__list.start_line
+        column_widths = self.table.get_column_widths(self.__spacing)[:]
+        column_widths[self.__sort_index] += len(self._get_sort_arrow())
+        column_names = self.table.get_column_names()[:]
+        column_names[self.__sort_index] = self._get_sort_arrow() + column_names[self.__sort_index]
+
         list_data = [(row.display(), i)
                      for i, row in enumerate(self.table.get_rows())]
-        column_widths = self.table.get_column_widths(self.__spacing)
 
         self.__list.options = list_data
+        self._sort_list()
         # self.__list.value = prev_value
         # self.__list.start_line = prev_start_line
         # Here we are editing a private attribute, and must thus be careful.
         # This is not an intended usecase by the module authors.
         self.__list._columns = column_widths
+        self.__list._titles = column_names
 
 
 """
