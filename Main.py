@@ -25,7 +25,6 @@ ordertable = Table(
     [str, str, str, datetime, datetime, str, str]
 )
 
-<<<<<<< HEAD
 # PRICES = [
 #     ['Small cars:', '2.900 ISK', '20.300 ISK', '87.000 ISK', '389.000 ISK'],
 #     ['Medium cars:', '3.900 ISK', '27.300 ISK', '117.000 ISK', '489.000 ISK'],
@@ -42,21 +41,11 @@ ordertable = Table(
 # ['Gold insurance', '450 ISK', '3150 ISK', '13500 ISK', '81900 ISK'] ]
 
 PRICE = {'Small Car':2900, 'Medium car': 3900, 'Large car': 4900, 'Jeep': 5900,
-'Basic insurance': 0, 'silver insurance': 250, 'Gold insurance': 450}
-PRICE_LIST= [[key, '{} ISK'.format(value ), '{} ISK'.format(value*7 ), '{} ISK'.format(value*30 ), 
-'{} ISK'.format(value*182)] for key, value in PRICE.items()]
+'Basic insurance': 0, 'Extra insurance': 450}
+PRICE_LIST= [[key, '{:,} ISK'.format(value ), '{:,} ISK'.format(value*7 ), '{:,} ISK'.format(value*30 ), 
+'{:,} ISK'.format(value*182)] for key, value in PRICE.items()]
 
 #PRICES_TABLE = Table(PRICE_LIST, ['', '1 day', '1 week', '1 month', '6 months'])
-=======
-PRICES = [
-    ['Small cars:', '2.900 ISK', '20.300 ISK', '87.000 ISK', '389.000 ISK'],
-    ['Medium cars:', '3.900 ISK', '27.300 ISK', '117.000 ISK', '489.000 ISK'],
-    ['Large cars:', '4.900 ISK', '34.300 ISK', '147.000 ISK', '598.000 ISK'],
-    ['Jeeps:', '5.900 ISK', '41.300 ISK', '177.000 ISK', '998.000 ISK'],
-]
-
-#PRICES_TABLE = Table(PRICES, ['', '1 day', '1 week', '1 month', '6 months'])
->>>>>>> f0e6d592d254f7d88e450ede6ad5a0532736432d
 
 
 def demo(screen):
