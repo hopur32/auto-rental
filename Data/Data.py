@@ -1,10 +1,10 @@
 from datetime import datetime
 from pathlib import Path
 
-from metadata import DATA_DIR
+from metadata import DATA_DIR, LOGGING_DIR
 
 import logging
-logging.basicConfig(filename='/tmp/debug.log', level=logging.DEBUG)
+logging.basicConfig(filename=LOGGING_DIR + '/debug.log', level=logging.DEBUG)
 
 class Column():
     def __init__(self, value):

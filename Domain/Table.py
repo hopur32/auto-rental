@@ -31,7 +31,7 @@ class Table(Data):
 
     def del_row(self, row_index):
         if row_index is not None:
-            super().del_row()
+            super().del_row(row_index)
             self._init_column_widths()
 
     def add_row(self, row):
