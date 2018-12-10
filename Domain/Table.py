@@ -1,112 +1,6 @@
 from datetime import datetime
 
-# import logging
-# logging.basicConfig(filename='/tmp/debug.log',level=logging.DEBUG)
-
-
-class Column():
-    def __init__(self, value):
-        self.set_value(value)
-
-    def value(self):
-        return self.__value
-
-    def set_value(self, value):
-        self.__value = value
-
-    def type(self):
-        return type(self.__value)
-
-    def set_type(self, type_constructor):
-        if not type_constructor == self.type():
-            self.__value = type_constructor(self.__value)
-
-    def am_compatible(self):
-        if self.type() in (bool, datetime):
-            return self.value()
-        else:
-            return str(self.value())
-
-    def display(self):
-        if self.type() == datetime:
-            string = self.__value.date()
-        else:
-            string = self.__value
-        return str(string)
-
-    def width(self):
-        return len(self.display())
-
-    def __len__(self):
-        return self.width()
-
-    def __str__(self):
-        return self.display()
-
-    def __repr__(self):
-        return 'Col({})'.format(self.value().__repr__())
-
-
-class Row():
-    def __init__(self, columns):
-        self.set_columns(columns)
-
-    def columns(self):
-        return self.__columns
-
-    def set_columns(self, columns):
-        new_columns = []
-        for column in columns:
-            if not isinstance(column, Column):
-                column = Column(column)
-            new_columns.append(column)
-        self.__columns = new_columns
-
-    def values(self):
-        return [col.value() for col in self.columns()]
-
-    def am_compatible(self):
-        return [col.am_compatible() for col in self.columns()]
-
-    def display(self):
-        return [col.display() for col in self.columns()]
-
-    def widths(self):
-        return [col.width() for col in self.columns()]
-
-    def types(self):
-        return [col.type() for col in self.columns()]
-
-    def set_types(self, types):
-        for col, t in zip(self.__columns, types):
-            col.set_type(t)
-
-    def __len__(self):
-        return len(self.columns())
-
-    def __repr__(self):
-        return 'Row({})'.format(self.columns())
-
-    def __getitem__(self, key):
-        return self.__columns[key]
-
-    def __setitem__(self, key, value):
-        self.__columns[key] = value
-
-    def __delitem__(self, key):
-        del self.__columns[key]
-
-    @classmethod
-    def default_from_types(cls, types):
-        columns = []
-        for col_type in types:
-            if col_type == datetime:
-                column = datetime.now()
-            else:
-                column = col_type()
-            columns.append(column)
-        return cls(columns)
-
+from Data.Data import Row, Data
 
 """
 Arguments:
@@ -115,77 +9,43 @@ Attributes:
     Public:
         self.current_row
     Private:
-        self.__rows
-        self.__num_cols
         self.__col_widths
-        self.__col_names
-        self.__col_types
 """
 
 
-class Table():
-    def __init__(self, rows, columns):
-        self.__col_names = columns
-        self.set_rows(rows)
+class Table(Data):
+    def __init__(self, *args, **kwargs):
         self.current_row = None
+        super().__init__(*args, **kwargs)
+        self._init_column_widths()
 
-    # Row management:
-    # --------------------------------------------------------------------------
-    """
-    Return private attribute self.__rows.
-    """
-
-    def get_rows(self):
-        return self.__rows
-
-    def get_row(self, row_index):
-        return self.__rows[row_index]
-
-    def get_current_row(self):
-        if self.current_row is None:
-            return Row.default_from_types(self.__col_types)
-        else:
-            return self.__rows[self.current_row]
-
-    """
-    Validates input and sets self.__rows, self.__num_cols,
-    and self.__col_widths().
-
-    Panics:
-        Raises valueerror if each row in the list of rows given does not have
-        the same length.
-        Raises typeerror if each column does not have the same type in every
-        row.
-    """
-
+    # Overload methods of parent class to update column widths:
+    # -------------------------------------------------------------------------
     def set_rows(self, rows):
-        rows = [Row(row) if not isinstance(row, Row) else row for row in rows]
-
-        first_row = rows[0]
-        self.__num_cols = len(first_row)
-        self.__col_types = first_row.types()
-
-        for row in rows[1:]:
-            self._assert_valid_row(row)
-        self.__rows = rows
+        super().set_rows(rows)
         self._init_column_widths()
 
     def set_row(self, row, row_index):
-        if not isinstance(row, Row):
-            row = Row(row)
-        self._assert_valid_row(row)
-        self.__rows[row_index] = row
-        self._update_column_widths(row.widths())
+        super().set_row(row, row_index)
+        self._init_column_widths()
 
-    def _assert_valid_row(self, row):
-        if len(row) != self.__num_cols:
-            raise ValueError(
-                'Each row in list of rows does not have the same length'
-            )
-        if row.types() != self.__col_types:
-            raise TypeError(
-                'Each column does not have the same type in every row'
-            )
+    def del_row(self, row_index):
+        if row_index is not None:
+            super().del_row()
+            self._init_column_widths()
+
+    def add_row(self, row):
+        super().add_row(row)
+        added_row = super().get_row(-1)
+        self._update_column_widths(added_row.widths())
+
+    # Methods on current row:
+    # --------------------------------------------------------------------------
+    def get_current_row(self):
+        if self.current_row is None:
+            return Row.default_from_types(super().get_column_types())
+        else:
+            return super().get_row(self.current_row)
 
     def edit_current_row(self, row):
         if self.current_row is None:
@@ -193,32 +53,8 @@ class Table():
         else:
             self.set_row(row, self.current_row)
 
-    """
-    Delete the row at row_index. Does nothing if row_index == None.
-    """
-
-    def del_row(self, row_index):
-        if row_index is not None:
-            del self.__rows[row_index]
-            self._init_column_widths()
-
     def del_current_row(self):
         self.del_row(self.current_row)
-
-    """
-    Add a row to table.
-
-    Panics:
-        This method raises ValueError if number of columns in given row
-        does not equal self.__num_cols.
-    """
-
-    def add_row(self, row):
-        if not isinstance(row, Row):
-            row = Row(row)
-        self._assert_valid_row(row)
-        self.__rows.append(row)
-        self._update_column_widths(row.widths())
 
     # Column widths:
     # --------------------------------------------------------------------------
@@ -228,17 +64,17 @@ class Table():
     """
 
     def _init_column_widths(self):
-        rows = self.__rows
-        widths = []
-        for i in range(self.__num_cols):
-            biggest_width = max([row[i].width() for row in rows])
-            widths.append(biggest_width)
+        rows = super().get_rows()
+        if len(rows) > 0:
+            widths = []
+            for i in range(super().get_num_columns()):
+                biggest_width = max([row[i].width() for row in rows])
+                widths.append(biggest_width)
 
-        self.__col_widths = widths
+            self.__col_widths = widths
         # Maybe the column name is larger than every one of the values in the
         # column:
-        self._update_column_widths([len(name)
-                                    for name in self.get_column_names()])
+        self._update_column_widths([len(name) for name in super().get_column_names()])
 
     def _update_column_widths(self, new_row_widths):
         try:
@@ -250,16 +86,8 @@ class Table():
 
     def get_column_widths(self, spacing=0):
         widths = self.__col_widths
-        # Apply spacing to every column except for the last one
-        return [w + spacing for w in widths[:-1]] + [widths[-1]]
-
-    # Get other private attributes:
-    # --------------------------------------------------------------------------
-    def get_column_names(self):
-        return self.__col_names
-
-    def get_column_types(self):
-        return self.__col_types
-
-    def get_num_columns(self):
-        return self.__num_cols
+        if len(widths) > 0:
+            # Apply spacing to every column except for the last one
+            return [w + spacing for w in widths[:-1]] + [widths[-1]]
+        else:
+            return []
