@@ -71,6 +71,8 @@ class DemoFrame(Frame):
         layout.add_widget(self._graph)
         layout.add_widget(Label("Press Enter to select or `q` to quit."))
 
+        self.set_theme('monochrome')
+
         self.fix()
     
     def on_change(self):
