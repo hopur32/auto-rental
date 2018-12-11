@@ -38,7 +38,7 @@ class TableFrame(Frame):
         )
 
 
-        layout = Layout([100])
+        layout = Layout([1, 1])
         # Search
         def searching():
             self.__searching = True
@@ -61,7 +61,7 @@ class TableFrame(Frame):
         )
         self.add_layout(layout)
         layout.add_widget(self.__header)
-        layout.add_widget(self.__search_box)
+        layout.add_widget(self.__search_box, column=1)
         layout.add_widget(self.__list)
         self.fix()
 
