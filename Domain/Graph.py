@@ -19,8 +19,9 @@ class Graph:
         self.maxlen = self.find_max_len()
         self.lentapel = (len(self.names_of_x)) * self.xspace * 2
     # Finna hoppið
-
-        if (heiltölu) < (self.maxvalue / (self.size)):
+        if self.maxvalue==0:
+            self.jump =1
+        elif (heiltölu) < (self.maxvalue / (self.size)):
             self.jump = heiltölu + 1
         else:
             self.jump = heiltölu
@@ -257,8 +258,9 @@ class Piechart:
 
                 magn = self.stuff_in_piechart[num][1]
                 tákn = self.character_list[num]
-                for j in range(int(magn * self.lenth / self.fj)):
-                    self.table += tákn
+                if self.fj != 0:
+                    for j in range(int(magn * self.lenth / self.fj)):
+                        self.table += tákn
 
             self.table += '\n'
 
@@ -268,14 +270,3 @@ class Piechart:
             string0 += item
         return string0
 
-# linurit=Linegram(type_of_line=	'S')
-# linurit.update_table()
-# print(str(linurit))
-
-# súlurit=Histogram(fill=True)
-# súlurit.update_table()
-# print(str(súlurit))
-
-# skífurit = Piechart()
-# skífurit.get_chart()
-# print(skífurit)
