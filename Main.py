@@ -1,5 +1,6 @@
 from UI.UserInterface import TableFrame, EditFrame
 from Domain.Table import Table
+from Data.Data import ID
 
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
@@ -11,8 +12,8 @@ customers = [[3110002920, 'Árni', 'Dagur', True, datetime(2000, 10, 31)],
              [1506992079, 'Viktor', 'Máni', False, datetime.now()]]
 customertable = Table(
     'Customers.txt',
-    ['Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Ethnicity'],
-    [int, str, str, str, str, datetime, str, datetime, str]
+    ['Customer ID','Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Ethnicity'],
+    [ID, int, str, str, str, str, datetime, str, datetime, str]
 )
 vehicletable = Table(
     'Vehicles.txt',
@@ -46,9 +47,9 @@ PRICE_LIST= [[key, '{:,} ISK'.format(value ), '{:,} ISK'.format(value*7 ), '{:,}
 def demo(screen):
     screen.play([
         #Scene([TableFrame(screen, PRICES_TABLE, 'pricelist', 'Prices')], -1, name='pricelist'),
-        Scene([TableFrame(screen, ordertable, 'customeredit', 'Customers')], -
+        Scene([TableFrame(screen, customertable, 'customeredit', 'Customers')], -
               1, name='customertable'),
-        Scene([EditFrame(screen, ordertable, 'customertable')], -
+        Scene([EditFrame(screen, customertable, 'customertable')], -
               1, name='customeredit'),
         #  Scene([TableFrame(screen, ordertable, 'orderedit')], -1, name='ordertable'),
         #  Scene([EditFrame(screen, ordertable, 'ordertable')], -1, name='orderedit')

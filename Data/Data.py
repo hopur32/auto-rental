@@ -1,5 +1,6 @@
 from datetime import datetime
 from pathlib import Path
+from uuid import uuid4
 
 from metadata import DATA_DIR, LOGGING_DIR
 
@@ -131,6 +132,24 @@ class Row():
                 column = col_type()
             columns.append(column)
         return cls(columns)
+
+class ID:
+    def __init__(self, *args):
+        num_args = len(args)
+        if num_args == 0:
+            self.__value = str(uuid4())
+        elif num_args == 1:
+            self.__value = args[0]
+        else:
+            raise TypeError('Bad number of arguments; 0 or 1 expected, {} given'.format(
+                num_args
+            ))
+
+    def __str__(self):
+        return str(self.__value)
+
+    def __eq__(self, other):
+        return self.__value == other.__value
 
 """
 Arguments:

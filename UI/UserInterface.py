@@ -8,8 +8,11 @@ from asciimatics.screen import Screen
 from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button, PopUpDialog, DatePicker, CheckBox
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene, InvalidFields
 
-from Data.Data import Row
+from Data.Data import Row, ID
 
+import logging
+from metadata import LOGGING_DIR
+logging.basicConfig(filename=LOGGING_DIR + '/debug.log', level=logging.DEBUG)
 
 """
 Attributes:
@@ -210,7 +213,11 @@ class EditFrame(Frame):
                     label=field_name,
                     name=field_name,
                     validator=r'^[0-9]*\.?[0-9]+$')
+            elif field_type == ID:
+                widget = Text(label=field_name, name=field_name)
+                widget.disabled = True
             else:
+                logging.debug('Creating normal textbox for type: {}, name: {}'.format(field_type, field_name))
                 widget = Text(label=field_name, name=field_name)
             main_layout.add_widget(widget)
 
