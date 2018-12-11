@@ -2,10 +2,9 @@ class Graph:
 
     def __init__(self, name='Name of graf',
                  names_of_x=['A', 'B', 'C'],
-                 values=[17, 21, 35],
-                 xspace=5, yspace=2, size=15):
+                 values=[17, 21, 35], yspace=2, size=15):
 
-        self.names_of_x, self.values, self.xspace = names_of_x, values, xspace
+        self.names_of_x, self.values= names_of_x, values
         self.name=name
 
         self.size = size
@@ -17,6 +16,7 @@ class Graph:
 
         heiltölu = self.maxvalue // (self.size)
         self.maxlen = self.find_max_len()
+        self.xspace = self.maxlen+1
         self.lentapel = (len(self.names_of_x)) * self.xspace * 2
     # Finna hoppið
         if self.maxvalue==0:
@@ -37,7 +37,7 @@ class Graph:
 
         for i in range((self.size), -1, -1):
             line_str_in_tabel = '{:>5}│'.format(
-                i * self.jump) + ' ' * (self.lentapel)
+                int(i * self.jump)) + ' ' * (self.lentapel)
             line_in_tabel = [[x]for x in line_str_in_tabel]
             self.table.append(line_in_tabel)
 
@@ -82,8 +82,8 @@ class Histogram(Graph):
     def __init__(self, name='Name of graph',
                  names_of_x=['A', 'B', 'C'],
                  values=[10, 15, 10],
-                 xspace=5, yspace=2, fill=False):
-        Graph.__init__(self, name, names_of_x, values, xspace, yspace)
+                 yspace=2, fill=False):
+        Graph.__init__(self, name, names_of_x, values, yspace)
 
         self.fill = fill
 
@@ -176,10 +176,10 @@ class Linegram(Graph):
                  type_of_line='A',
                  names_of_x=['A', 'B', 'C'],
                  values=[10, 15, 10],
-                 xspace=5, yspace=2):
+                 yspace=2):
         r'''Type of line S= stars'*', A= arrowes '- 🡕 🡖', L= lines '/\-' '''
 
-        Graph.__init__(self, name, names_of_x, values, xspace, yspace)
+        Graph.__init__(self, name, names_of_x, values, yspace)
 
         self.type_of_line = type_of_line.upper()
 
@@ -269,4 +269,3 @@ class Piechart:
         for item in self.table:
             string0 += item
         return string0
-
