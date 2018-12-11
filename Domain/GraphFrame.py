@@ -1,4 +1,4 @@
-from Graph import Piechart, Histogram, Linegram
+from Domain.Graph import Piechart, Histogram, Linegram
 from Data.Data import Data
 
 from asciimatics.event import KeyboardEvent
