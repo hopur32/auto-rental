@@ -12,7 +12,7 @@ customers = [[3110002920, 'Árni', 'Dagur', True, datetime(2000, 10, 31)],
              [1506992079, 'Viktor', 'Máni', False, datetime.now()]]
 customertable = Table(
     'Customers.txt',
-    ['Customer ID','Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Ethnicity'],
+    ['Customer ID','Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Nationality'],
     [ID, int, str, str, str, str, datetime, str, datetime, str]
 )
 vehicletable = Table(

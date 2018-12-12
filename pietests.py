@@ -11,8 +11,10 @@ from Domain.Graph import Linegram
 def test_create_table():
     rows = [[3110002920, 'Árni', 'Dagur', True, datetime(2000, 10, 31)],
             [1506995079, 'Viktor', 'Máni', False, datetime.now()]]
-    table = Table(rows, ['Kennitala', 'First Name', 'Last name',
-                              'Is awesome', 'DOB'])
+    table = Table('test_list.txt', 
+        ['Kennitala', 'First Name', 'Last name', 'Is awesome', 'DOB'],
+        [int, str, str, bool, datetime]
+    )
     return table
 
 def test_add_and_get_row(): 
