@@ -1,10 +1,12 @@
 def kennitala_check(kt):
-    'Settur inn kennitölu, skilar bool og ef hún er vitlaus skilar hún líka sterng af því hvað er ekki að virka'
+    #Kennitala is the personal identification number all Icelandic citizens have.
+    "Input a kennitala, returns a bool. If it's incorrect also returns a string explaining what's wrong with it"
+    #kt = kennitala
     kt = str(kt)
     try: 
         int(kt)
     except ValueError:  	
-        return False, 'kennitala can only be intigers'
+        return False, 'kennitala can only be integers'
     else:
         if len(kt) == 10:
             sum1= ((3 * int(kt[0])) +
@@ -22,5 +24,5 @@ def kennitala_check(kt):
             else:           
                 return False, 'Invalid kennitala'
         else:               
-            return False, 'Kennitala has invalid lenth'
+            return False, 'Kennitala has invalid length'
 

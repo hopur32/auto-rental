@@ -270,8 +270,3 @@ class Piechart:
             string0 += item
         return string0
 
-values = [4, 7.8, 3, 5.2, 1, 0.2, 9]
-names = ['Four', 'B', 'Ullarpeysa', 'Hundaæði', 'Age star', 'SMALL', '__--!']
-graph = Linegram(values=values, names_of_x=names)
-graph.update_table()
-print(graph)

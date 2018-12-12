@@ -36,7 +36,7 @@ def test_set_rows():
 def test_linegram():
     # graph with parameters values = 4, 7.8, 3, 5.2, 1, 0.2, 9
     # and names_of_x  = 'Four', 'B', 'Ullarpeysa', 'Hundaæði', 'Age star', 'SMALL', '__--!'
-    test_graph = """Name of grapph
+    test_graph = """Name of graph
 
 
    15│
