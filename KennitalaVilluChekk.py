@@ -16,7 +16,7 @@ def kennitala_check(kt):
             (3 * int(kt[6])) +
             (2 * int(kt[7])) + 
                  int(kt[8]))
-
+ 
             if (sum1 % 11) == 0: 
                 return True 
             else:           
