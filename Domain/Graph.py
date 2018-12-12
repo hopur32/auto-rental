@@ -18,7 +18,7 @@ class Graph:
         self.maxlen = self.find_max_len()
         self.xspace = self.maxlen+1
         self.lentapel = (len(self.names_of_x)) * self.xspace * 2
-    # Fspacesa hoppið
+    # Find jump
         if self.maxvalue==0:
             self.jump =1
         elif (whole_number) < (self.maxvalue / (self.size)):
@@ -202,16 +202,16 @@ class Linegram(Graph):
 
         i1, spaces1 = list_of_locations.pop(0)
 
-        for staðsetning in list_of_locations:
-            i, spaces = staðsetning
+        for location in list_of_locations:
+            i, spaces = location
             stepps = i1 - i
-            i1, spaces1 = staðsetning
+            i1, spaces1 = location
             slope = stepps / (self.maxlen + self.xspace)
 
             for j in range(1, self.xspace + self.maxlen):
                 number = slope * j
 
-            # Með örvum
+            # With arrows
                 if self.type_of_line == 'A':
                     if int(number) > 0:
                         self.table[int(i + number)][spaces - j] = '🡕'
@@ -220,7 +220,7 @@ class Linegram(Graph):
                     elif int(number) == 0:
                         self.table[int(i + number)][spaces - j] = '━'
 
-            # Með línum
+            # With lines
                 elif self.type_of_line == 'L':
                     if int(number) > 0:
                         self.table[int(i + number)][spaces - j] = '/'
@@ -228,7 +228,7 @@ class Linegram(Graph):
                         self.table[int(i + number)][spaces - j] = r"\ "
                     elif int(number) == 0:
                         self.table[int(i + number)][spaces - j] = '-'
-            # Með stjörnum
+            # With stars
                 else:
                     self.table[int(i + number)][spaces - j] = '*'
 
@@ -256,11 +256,11 @@ class Piechart:
         for i in range(self.hight):
             for num in range(len(self.stuff_in_piechart)):
 
-                magn = self.stuff_in_piechart[num][1]
-                tákn = self.character_list[num]
+                quantity = self.stuff_in_piechart[num][1]
+                symbol = self.character_list[num]
                 if self.length != 0:
-                    for j in range(int(magn * self.length / self.length)):
-                        self.table += tákn
+                    for j in range(int(quantity * self.length / self.length)):
+                        self.table += symbol
 
             self.table += '\n'
 
@@ -270,3 +270,14 @@ class Piechart:
             string0 += item
         return string0
 
+values = [4, 7.8, 3, 5.2, 1, 0.2, 9]
+names = ['Four', 'B', 'Ullarpeysa', 'Hundaæði', 'Age star', 'SMALL', '__--!']
+graph = Linegram(values=values, names_of_x=names)
+graph.update_table()
+print(graph)
+graph = Piechart()
+graph.get_chart()
+print(graph)
+graph = Histogram()
+graph.update_table()
+print(graph)
