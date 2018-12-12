@@ -194,6 +194,7 @@ class Data():
 
                 rows = []
                 for line in f.readlines():
+                    line = line.strip()
                     row = Row(line.split(self.__delim))
                     row.set_types(self.__col_types)
                     rows.append(row)
