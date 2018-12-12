@@ -82,12 +82,28 @@ def demo(screen):
 
 
     effects = [
-        Print(screen, FigletText("Auto-Car-Rental", font='big'), screen.height // 3),
+        # Print(screen, FigletText("Auto-Car-Rental", font='big'), screen.height // 3),
+        #Print(screen, ColourImageFile(screen, "logo.png", 10, 0, False) ,15),
+        Print(screen,
+              StaticRenderer(images=['''
+         ###################
+        #####################
+       ####    / o o \    ####
+  ###  ####    \_____/    ####  ###
+   ########     /   \     ########
+       #######################
+       ###########O###########
+       ####_______________#### 
+       ####_______________####
+       #######################
+         ####           ####''']),
+              2),
+        Print( screen, FigletText('Car Rental', font= 'Big'), 14),
+        Print( screen, FigletText('The BEST!', font= 'small'), 20, colour=Screen.COLOUR_GREEN),
         Print(screen,
               StaticRenderer(images=["< Press enter to continue >"]),
-              screen.height - 1)
-    ]
-    scenes.append(Scene(effects, 0,1))
+              screen.height - 1) ]
+    scenes.append(Scene(effects, 0))
 
     screen.play(scenes, stop_on_resize=True, repeat=False)
 
