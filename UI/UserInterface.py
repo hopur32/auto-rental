@@ -89,7 +89,8 @@ class TableFrame(Frame):
                 self.__sort_index = max(0, self.__sort_index - 1)
                 self._reload_list()
             elif event.key_code == ord(">"):
-                self.__sort_index = min(self.table.get_num_columns() - 1, self.__sort_index + 1)
+                self.__sort_index = min(self.table.get_num_columns() + len(self.table.runtime_columns) - 1,
+                                        self.__sort_index + 1)
                 self._reload_list()
 
         # Now pass on to lower levels for normal handling of the event.
@@ -137,25 +138,6 @@ class TableFrame(Frame):
         self.__list.options = sorted(self.__list.options, key=lambda x: x[0][self.__sort_index],
                                      reverse=self.__reverse_sort)
 
-    """
-    Pull self.table.get_rows(), filter the results using the search string, then update
-    self.__list.options.
-    """
-    def _update_list_data(self):
-        self.save()
-        try:
-            query = self.data['search'].strip().lower()
-            rows = []
-            for row in self.table.get_rows():
-                row = row.display()
-                for col in row:
-                    if query in col.lower():
-                        rows.append(row)
-                        break
-        except KeyError:
-            rows = [row.display() for row in self.table.get_rows()]
-        self.__list.options = [(row, i) for i, row in enumerate(rows)]
-
     def _get_sort_arrow(self):
         if self.__reverse_sort:
             return '▲ '
@@ -164,16 +146,38 @@ class TableFrame(Frame):
 
     def _reload_list(self):
         column_widths = self.table.get_column_widths(self.__spacing)[:]
-        column_widths[self.__sort_index] += len(self._get_sort_arrow())
         column_names = self.table.get_column_names()[:]
+
+        self.save()
+        try:
+            query = self.data['search'].strip().lower()
+        except KeyError:
+            query = ''
+        rows = []
+        for row in self.table.get_rows():
+            display_row = row.display()
+            for name, fun, args in self.table.runtime_columns:
+                runtime_row = fun(row, *args)
+                column_widths.append(len(runtime_row) + self.__spacing)
+                column_names.append(name)
+                display_row.append(runtime_row)
+
+            for col in display_row:
+                if query in col.lower():
+                    rows.append(display_row)
+                    break
+        self.__list.options = [(row, i) for i, row in enumerate(rows)]
+
+        column_widths[self.__sort_index] += len(self._get_sort_arrow())
         column_names[self.__sort_index] = self._get_sort_arrow() + column_names[self.__sort_index]
 
-        self._update_list_data()
         self._sort_list()
         # Here we are editing private attributes, and must thus be careful.
         # This is not an intended usecase by the module authors.
         self.__list._columns = column_widths
         self.__list._titles = column_names
+        self.__list._spacing = [0] * len(column_widths)
+        self.__list._align = ['<'] * len(column_widths)
 
 
 """

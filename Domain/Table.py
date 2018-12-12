@@ -8,14 +8,16 @@ Arguments:
 Attributes:
     Public:
         self.current_row
+        self.runtime_columns
     Private:
         self.__col_widths
 """
 
 
 class Table(Data):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, runtime_columns=[], **kwargs):
         self.current_row = None
+        self.runtime_columns = runtime_columns
         super().__init__(*args, **kwargs)
         self._init_column_widths()
 
@@ -88,6 +90,6 @@ class Table(Data):
         widths = self.__col_widths
         if len(widths) > 0:
             # Apply spacing to every column except for the last one
-            return [w + spacing for w in widths[:-1]] + [widths[-1]]
+            return [w + spacing for w in widths]
         else:
             return []
