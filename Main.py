@@ -61,9 +61,9 @@ def demo(screen):
               1, name='Customer Table'),
         Scene([EditFrame(screen, customertable, 'Customer Table')], -
               1, name='customeredit'),
-        Scene([TableFrame(screen, ordertable, 'orderedit', 'Orders', scene_keybinds=keybinds)], -1, name='Order Table'),
+        Scene([TableFrame(screen, ordertable, 'orderedit', 'Orders', scene_keybinds=keybinds, footer=keybinds)], -1, name='Order Table'),
         Scene([EditFrame(screen, ordertable, 'Order Table')], -1, name='orderedit'),
-        Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds)], -1, name='Vehicle Table'),
+        Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds, footer=keybinds)], -1, name='Vehicle Table'),
         Scene([EditFrame(screen, vehicletable, 'Vehicle Table')], -1, name='vehicleedit')
     ], stop_on_resize=True)
 
