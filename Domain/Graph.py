@@ -223,11 +223,11 @@ class Linegram(Graph):
             # With lines
                 elif self.type_of_line == 'L':
                     if int(number) > 0:
-                        self.table[int(i + number)][spaces - j] = '/'
+                        self.table[int(i + number)][spaces - j] = '╱'
                     elif int(number) < 0:
-                        self.table[int(i + number)][spaces - j] = r"\ "
+                        self.table[int(i + number)][spaces - j] = "╲"
                     elif int(number) == 0:
-                        self.table[int(i + number)][spaces - j] = '-'
+                        self.table[int(i + number)][spaces - j] = '━'
             # With stars
                 else:
                     self.table[int(i + number)][spaces - j] = '*'
@@ -269,15 +269,3 @@ class Piechart:
         for item in self.table:
             string0 += item
         return string0
-
-values = [4, 7.8, 3, 5.2, 1, 0.2, 9]
-names = ['Four', 'B', 'Ullarpeysa', 'Hundaæði', 'Age star', 'SMALL', '__--!']
-graph = Linegram(values=values, names_of_x=names)
-graph.update_table()
-print(graph)
-graph = Piechart()
-graph.get_chart()
-print(graph)
-graph = Histogram()
-graph.update_table()
-print(graph)

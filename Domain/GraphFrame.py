@@ -18,11 +18,6 @@ car_list=list()
 
 
 def get_info():
-    customertable = Data(
-    'Customers.txt',
-    ['Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Ethnicity'],
-    [int, str, str, str, str, datetime, str, datetime, str]
-    )
     vehicletable = Data(
         'Vehicles.txt',
         ['License Plate', 'Manufacturer', 'Model', 'Year', 'Location', 'Category', 'Available'],
@@ -38,8 +33,7 @@ def get_info():
         order_list.append(item.values())
     for item in vehicletable.get_rows():
         car_list.append(item.values())
-    for item in customertable.get_rows():
-        customer_list.append(item.values())
+
 
 
 def make_graph_list():
@@ -85,13 +79,6 @@ def make_graph_list():
     values=[j,f,m,a,m1,j1,j2,a1,s,o,n,d])
     line_income.update_table()
     graph_list.append(line_income)
-
-        #sleppa?
-    # customers_graph=Histogram(name='Histogram of all customers between nations', 
-    # names_of_x=['Is', 'Dk', 'USA'],
-    # values=[1,2,3])
-    # customers_graph.update_table()
-    # graph_list.append(customers_graph)
 
     s,m,l,j=0,0,0,0
     for row in car_list:
