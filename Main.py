@@ -1,8 +1,9 @@
 from UI.UserInterface import TableFrame, EditFrame
 from Domain.Table import Table
 from Data.Data import ID
-from Domain.PriceFrame import PRICE
-
+from Domain.PriceFrame import PRICE,PriceFrame
+from Domain.GraphFrame import GraphFrame
+from Domain.WelcomeFrame import demoWelcome
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError
@@ -64,7 +65,9 @@ vehicletable = Table(
 keybinds = {
     'c': 'Customer Table',
     'o': 'Order Table',
-    'v': 'Vehicle Table'
+    'v': 'Vehicle Table',
+    'p': 'Price List',
+    'g': 'Statistics'
 }
 
 def demo(screen):
@@ -76,13 +79,18 @@ def demo(screen):
         Scene([TableFrame(screen, ordertable, 'orderedit', 'Orders', scene_keybinds=keybinds, footer=keybinds)], -1, name='Order Table'),
         Scene([EditFrame(screen, ordertable, 'Order Table')], -1, name='orderedit'),
         Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds, footer=keybinds)], -1, name='Vehicle Table'),
-        Scene([EditFrame(screen, vehicletable, 'Vehicle Table')], -1, name='vehicleedit')
+        Scene([EditFrame(screen, vehicletable, 'Vehicle Table')], -1, name='vehicleedit'),
+        Scene([PriceFrame(screen, footer=keybinds)], -1, name='Price List'),
+        Scene([GraphFrame(screen, footer=keybinds)], -1, name='Statistics')
     ], stop_on_resize=True)
-
 
 while True:
     try:
-        Screen.wrapper(demo, catch_interrupt=True)
-        exit()
+        Screen.wrapper(demoWelcome)
+        try:
+            Screen.wrapper(demo, catch_interrupt=True)
+            exit()
+        except ResizeScreenError:
+            pass
     except ResizeScreenError:
         pass

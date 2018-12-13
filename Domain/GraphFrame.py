@@ -107,9 +107,9 @@ def make_graph_list():
     graph_list.append(car_out_graph)
 
 
-class DemoFrame(Frame):
-    def __init__(self, screen):
-        super(DemoFrame, self).__init__(
+class GraphFrame(Frame):
+    def __init__(self, screen, footer=dict()):
+        super(GraphFrame, self).__init__(
             screen, screen.height, screen.width, has_border=False, name="My Form")
 
         layout = Layout([1], fill_frame=True)
@@ -124,10 +124,14 @@ class DemoFrame(Frame):
         
         self._list._on_change = self.on_change
         
+        footers = ['[{}] {}'.format(key, text) for key, text in footer.items()]
+        default_footer_text = '[q] Quit'
+        self.__footer= Label(' '.join(footers) + ' ' + default_footer_text)
+
 
         layout.add_widget(self._list)
         layout.add_widget(self._graph)
-        layout.add_widget(Label("Press Enter to select or 'q' to quit."))
+        layout.add_widget(self.__footer)
 
         self.set_theme('monochrome')
 
@@ -144,24 +148,10 @@ class DemoFrame(Frame):
             if event.key_code in [ord('q'), ord('Q'), Screen.ctrl("c")]:
                 raise StopApplication("User quit")
 
-        return super(DemoFrame, self).process_event(event)
+        return super(GraphFrame, self).process_event(event)
 
-
-def demo(screen, old_scene):
-    screen.play([Scene([DemoFrame(screen)], -1)], stop_on_resize=True, start_scene=old_scene)
 
 
 make_graph_list()
 get_info()
 dropdown_options=[(graph_list[i].name, i) for i in range(len(graph_list))]
-
-
-
-
-last_scene = None
-while True:
-    try:
-        Screen.wrapper(demo, catch_interrupt=False, arguments=[last_scene])
-        sys.exit(0)
-    except ResizeScreenError as e:
-        last_scene = e.scene

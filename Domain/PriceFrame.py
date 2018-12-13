@@ -15,36 +15,25 @@ for line in PRICE_LIST:
     price_string+='{:<20}\t{:>15} {:>15} {:>15} {:>15}\n'.format(line[0], line[1], line[2], line[3], line[4])
 
 
-class DemoFrame(Frame):
-    def __init__(self, screen):
-        super(DemoFrame, self).__init__(
-            screen, screen.height, screen.width, has_border=False, name="My Form")
+class PriceFrame(Frame):
+    def __init__(self, screen, footer=dict()):
+        super(PriceFrame, self).__init__(
+            screen, screen.height, screen.width, has_border=True, name="My Form")
 
         layout = Layout([1], fill_frame=True)
         self.add_layout(layout)
         self._price = TextBox(25, name='pricelist', as_string=True )
         self._price.value = price_string
         self._price.disabled = True
-        layout.add_widget(Label('{:<20}\t{:>15} {:>15} {:>15} {:>15}\n'.format('', '1 day', '1 week', '1 month', '6 months')))     
+        footers = ['[{}] {}'.format(key, text) for key, text in footer.items()]
+        default_footer_text = '[q] Quit'
+        self.__footer= Label(' '.join(footers) + ' ' + default_footer_text)
+
+        layout.add_widget(Label('{:<20}\t{:>15} {:>15} {:>15} {:>15}'.format('', '1 day', '1 week', '1 month', '6 months')))   
         layout.add_widget(self._price)
-        layout.add_widget(Label("Press Enter to select or `q` to quit."))
+        layout.add_widget(self.__footer)  
 
         self.set_theme('monochrome')
 
         self.fix()
  
-
-def demo(screen, old_scene):
-    screen.play([Scene([DemoFrame(screen)], -1)], stop_on_resize=True, start_scene=old_scene)
-
-
-
-
-
-#last_scene = None
-#while True:
-#    try:
-#        Screen.wrapper(demo, catch_interrupt=False, arguments=[last_scene])
-#        sys.exit(0)
-#    except ResizeScreenError as e:
-#        last_scene = e.scene
