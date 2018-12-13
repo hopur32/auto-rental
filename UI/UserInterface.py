@@ -23,18 +23,21 @@ Attributes:
         self.__header
         self.__list
         self.__edit_scene
+        self.__keybindings
 """
 
 
 class TableFrame(Frame):
     def __init__(self, screen, table, edit_scene,
-                 header_text='TableFrame', spacing=2, has_border=True, reverse_sort=False, sort_index=0):
+                 header_text='TableFrame', spacing=2, has_border=True,
+                 reverse_sort=False, sort_index=0, scene_keybinds=None):
         self.table = table
         self.__screen = screen
         self.__edit_scene = edit_scene
         self.__spacing = spacing
         self.__reverse_sort = reverse_sort
         self.__sort_index = sort_index
+        self.__scene_keybinds = scene_keybinds
         super().__init__(
             screen, screen.height, screen.width, has_border=has_border,
             name=header_text, on_load=self._reload_list
@@ -74,6 +77,10 @@ class TableFrame(Frame):
     def process_event(self, event):
         # Do the key handling for this Frame.
         if isinstance(event, KeyboardEvent) and not self.__searching:
+            if self.__scene_keybinds:
+                for keybind, scene in self.__scene_keybinds.items():
+                    if event.key_code in [ord(keybind.lower()), ord(keybind.upper())]:
+                        raise NextScene(scene)
             if event.key_code in [ord('q'), ord('Q'), Screen.ctrl('c')]:
                 raise StopApplication("User quit")
             elif event.key_code in [ord('a'), ord('A')]:
