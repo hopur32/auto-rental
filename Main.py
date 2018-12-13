@@ -59,7 +59,7 @@ def demo(screen):
     screen.play([
         Scene([TableFrame(screen, customertable, 'customeredit', 'Customers', scene_keybinds=keybinds)], -
               1, name='customertable'),
-        Scene([EditFrame(screen, ordertable, 'customertable')], -
+        Scene([EditFrame(screen, customertable, 'customertable')], -
               1, name='customeredit'),
         Scene([TableFrame(screen, ordertable, 'orderedit', 'Orders', scene_keybinds=keybinds)], -1, name='ordertable'),
         Scene([EditFrame(screen, ordertable, 'ordertable')], -1, name='orderedit'),
