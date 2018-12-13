@@ -49,14 +49,22 @@ vehicletable = Table(
     runtime_columns=[('Occupied', is_taken, [ordertable])]
 )
 
+keybinds = {
+    'c': 'customertable',
+    'o': 'ordertable',
+    'v': 'vehicletable'
+}
+
 def demo(screen):
     screen.play([
-        Scene([TableFrame(screen, customertable, 'customeredit', 'Customers')], -
+        Scene([TableFrame(screen, customertable, 'customeredit', 'Customers', scene_keybinds=keybinds)], -
               1, name='customertable'),
         Scene([EditFrame(screen, customertable, 'customertable')], -
               1, name='customeredit'),
-        #  Scene([TableFrame(screen, ordertable, 'orderedit')], -1, name='ordertable'),
-        #  Scene([EditFrame(screen, ordertable, 'ordertable')], -1, name='orderedit')
+        Scene([TableFrame(screen, ordertable, 'orderedit', 'Orders', scene_keybinds=keybinds)], -1, name='ordertable'),
+        Scene([EditFrame(screen, ordertable, 'ordertable')], -1, name='orderedit'),
+        Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds)], -1, name='vehicletable'),
+        Scene([EditFrame(screen, vehicletable, 'vehicletable')], -1, name='vehicleedit')
     ], stop_on_resize=True)
 
 
