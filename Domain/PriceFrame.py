@@ -6,7 +6,7 @@ import sys
 import os
 
 PRICE = {'Small Car':2900, 'Medium car': 3900, 'Large car': 4900, 'Jeep': 5900,
-'Basic insurance': 0, 'Extra insurance': 450}
+'Basic insurance': 0, 'Extra insurance': 850, 'GPS': 350}
 PRICE_LIST= [[key, '{:,} ISK'.format(value ), '{:,} ISK'.format(value*7 ), '{:,} ISK'.format(value*30 ), 
 '{:,} ISK'.format(value*182)] for key, value in PRICE.items()]
 header='{:<20}\t{:>15} {:>15} {:>15} {:>15}\n'.format('', '1 day', '1 week', '1 month', '6 months')
