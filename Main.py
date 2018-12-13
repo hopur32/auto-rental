@@ -17,13 +17,13 @@ customertable = Table(
 def calc_price(row):
     row = row.values()
     start, end = row[3], row[4]
-    days = max((end - start).days, 1)
+    days = (end - start).days + 1
     has_insurance, has_gps = row[5], row[6]
 
-    price_p_day = 5000
+    price_p_day = 3000
     if has_insurance:
         price_p_day += 1000
-    if has_insurance:
+    if has_gps:
         price_p_day += 350
 
     return str(price_p_day * days)
@@ -51,9 +51,9 @@ vehicletable = Table(
 
 def demo(screen):
     screen.play([
-        Scene([TableFrame(screen, customertable, 'customeredit', 'Customers')], -
+        Scene([TableFrame(screen, ordertable, 'customeredit', 'Customers')], -
               1, name='customertable'),
-        Scene([EditFrame(screen, customertable, 'customertable')], -
+        Scene([EditFrame(screen, ordertable, 'customertable')], -
               1, name='customeredit'),
         #  Scene([TableFrame(screen, ordertable, 'orderedit')], -1, name='ordertable'),
         #  Scene([EditFrame(screen, ordertable, 'ordertable')], -1, name='orderedit')
