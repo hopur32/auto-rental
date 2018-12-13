@@ -119,7 +119,7 @@ class DemoFrame(Frame):
 
         self._graph.custom_colour= 'label'
 
-        self._list = DropdownList(dropdown_options, label= 'Pick a grafh', name='dropdown')
+        self._list = DropdownList(dropdown_options, label= 'Pick a graph', name='dropdown')
         self._graph.value= str(graph_list[self._list.value])
         
         self._list._on_change = self.on_change
@@ -127,7 +127,7 @@ class DemoFrame(Frame):
 
         layout.add_widget(self._list)
         layout.add_widget(self._graph)
-        layout.add_widget(Label("Press Enter to select or `q` to quit."))
+        layout.add_widget(Label("Press Enter to select or 'q' to quit."))
 
         self.set_theme('monochrome')
 
