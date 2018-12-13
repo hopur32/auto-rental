@@ -145,8 +145,11 @@ class TableFrame(Frame):
             return '▼ '
 
     def _reload_list(self):
-        column_widths = self.table.get_column_widths(self.__spacing)[:]
         column_names = self.table.get_column_names()[:]
+        for name, _, _ in self.table.runtime_columns:
+            column_names.append(name)
+        column_widths = [len(name) for name in column_names]
+
 
         self.save()
         try:
@@ -155,19 +158,20 @@ class TableFrame(Frame):
             query = ''
         rows = []
         for row in self.table.get_rows():
-            display_row = row.display()
+            display_row = row.display()[:]
             for name, fun, args in self.table.runtime_columns:
-                runtime_row = fun(row, *args)
-                column_widths.append(len(runtime_row) + self.__spacing)
-                column_names.append(name)
-                display_row.append(runtime_row)
+                rt_col = fun(row, *args)
+                display_row.append(rt_col)
 
             for col in display_row:
                 if query in col.lower():
                     rows.append(display_row)
+                    column_widths = [max(new, old) for new, old in
+                                     zip([len(c) for c in display_row], column_widths)]
                     break
         self.__list.options = [(row, i) for i, row in enumerate(rows)]
 
+        column_widths = [w + self.__spacing for w in column_widths]
         column_widths[self.__sort_index] += len(self._get_sort_arrow())
         column_names[self.__sort_index] = self._get_sort_arrow() + column_names[self.__sort_index]
 
