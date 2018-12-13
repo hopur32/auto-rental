@@ -113,7 +113,7 @@ class TableFrame(Frame):
         raise NextScene(self.__edit_scene)
 
     """
-    Delete the selcted row from self.table and redraws the list.
+    Deletes the selcted row from self.table and redraws the list.
     """
 
     def _delete(self):
@@ -133,7 +133,7 @@ class TableFrame(Frame):
                     self.__list.value = None
         popup = PopUpDialog(
             self.__screen,
-            "Hey dumbass. Are you sure you want to proceed?",
+            "Are you sure you want to DELETE?",
             ["Yes", "No"],
             has_shadow=True,
             on_close=act_on_selection
