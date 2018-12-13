@@ -80,7 +80,7 @@ def demo(screen):
         Scene([EditFrame(screen, ordertable, 'Order Table')], -1, name='orderedit'),
         Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds, footer=keybinds)], -1, name='Vehicle Table'),
         Scene([EditFrame(screen, vehicletable, 'Vehicle Table')], -1, name='vehicleedit'),
-        Scene([PriceFrame(screen, footer=keybinds)], -1, name='Price List'),
+        Scene([PriceFrame(screen, footer=keybinds, scene_keybinds=keybinds)], -1, name='Price List'),
         Scene([GraphFrame(screen, footer=keybinds, scene_keybinds=keybinds)], -1, name='Statistics')
     ], stop_on_resize=True)
 
