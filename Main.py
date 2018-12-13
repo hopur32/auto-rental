@@ -13,7 +13,7 @@ customers = [[3110002920, 'Árni', 'Dagur', True, datetime(2000, 10, 31)],
 customertable = Table(
     'Customers.txt',
     ['Customer ID','Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Nationality'],
-    [ID, int, str, str, str, str, datetime, str, datetime, str]
+    [ID, str, str, str, str, str, datetime, str, datetime, str]
 )
 vehicletable = Table(
     'Vehicles.txt',
@@ -40,7 +40,7 @@ PRICE = {'Small Car':2900, 'Medium car': 3900, 'Large car': 4900, 'Jeep': 5900,
 'Basic insurance': 0, 'Extra insurance': 450}
 PRICE_LIST= [[key, '{:,} ISK'.format(value ), '{:,} ISK'.format(value*7 ), '{:,} ISK'.format(value*30 ), 
 '{:,} ISK'.format(value*182)] for key, value in PRICE.items()]
-
+ 
 #PRICES_TABLE = Table(PRICE_LIST, ['', '1 day', '1 week', '1 month', '6 months'])
 
 
