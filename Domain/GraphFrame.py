@@ -5,7 +5,7 @@ from asciimatics.event import KeyboardEvent
 from asciimatics.widgets import Frame, Layout, FileBrowser, Widget, Label, PopUpDialog, Text, DropdownList, TextBox
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
-from asciimatics.exceptions import ResizeScreenError, StopApplication
+from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene
 from datetime import datetime
 import sys
 import os
@@ -108,13 +108,14 @@ def make_graph_list():
 
 
 class GraphFrame(Frame):
-    def __init__(self, screen, footer=dict()):
+    def __init__(self, screen, footer=dict(), scene_keybinds=None):
         super(GraphFrame, self).__init__(
             screen, screen.height, screen.width, has_border=False, name="My Form")
 
         layout = Layout([1], fill_frame=True)
         self.add_layout(layout)
-        self._graph = TextBox(25, name='graph', as_string=True, )
+        self.__scene_keybinds= scene_keybinds
+        self._graph = TextBox(25, name='graph', as_string=True )
         self._graph.disabled = True     
 
         self._graph.custom_colour= 'label'
@@ -145,6 +146,10 @@ class GraphFrame(Frame):
 
     def process_event(self, event):
         if isinstance(event, KeyboardEvent):
+            if self.__scene_keybinds:
+                for keybind, scene in self.__scene_keybinds.items():
+                    if event.key_code in [ord(keybind.lower()), ord(keybind.upper())]:
+                        raise NextScene(scene)
             if event.key_code in [ord('q'), ord('Q'), Screen.ctrl("c")]:
                 raise StopApplication("User quit")
 

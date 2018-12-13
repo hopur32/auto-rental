@@ -81,16 +81,18 @@ def demo(screen):
         Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds, footer=keybinds)], -1, name='Vehicle Table'),
         Scene([EditFrame(screen, vehicletable, 'Vehicle Table')], -1, name='vehicleedit'),
         Scene([PriceFrame(screen, footer=keybinds)], -1, name='Price List'),
-        Scene([GraphFrame(screen, footer=keybinds)], -1, name='Statistics')
+        Scene([GraphFrame(screen, footer=keybinds, scene_keybinds=keybinds)], -1, name='Statistics')
     ], stop_on_resize=True)
 
 while True:
     try:
         Screen.wrapper(demoWelcome)
-        try:
-            Screen.wrapper(demo, catch_interrupt=True)
-            exit()
-        except ResizeScreenError:
-            pass
+        break
+    except ResizeScreenError:
+        pass
+while True:
+    try:
+        Screen.wrapper(demo, catch_interrupt=True)
+        exit()
     except ResizeScreenError:
         pass
