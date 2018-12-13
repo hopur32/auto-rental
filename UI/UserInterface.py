@@ -5,7 +5,8 @@ from datetime import datetime
 from asciimatics.event import KeyboardEvent
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
-from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button, PopUpDialog, DatePicker, CheckBox
+from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button, \
+Label, PopUpDialog, DatePicker, CheckBox
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene, InvalidFields
 
 from Data.Data import Row, ID
@@ -29,8 +30,9 @@ Attributes:
 
 class TableFrame(Frame):
     def __init__(self, screen, table, edit_scene,
-                 header_text='TableFrame', spacing=2, has_border=True,
-                 reverse_sort=False, sort_index=0, scene_keybinds=None):
+                 header_text='TableFrame', spacing=2, has_border=True, 
+                 footer= dict(), reverse_sort=False, sort_index=0, 
+                 scene_keybinds=None):
         self.table = table
         self.__screen = screen
         self.__edit_scene = edit_scene
@@ -44,7 +46,7 @@ class TableFrame(Frame):
         )
 
 
-        layout = Layout([1, 1])
+        layout = Layout([17, 3])
         # Search
         def searching():
             self.__searching = True
@@ -65,10 +67,15 @@ class TableFrame(Frame):
             titles=self.table.get_column_names(),
             name='row_index'
         )
+        footers = ['[{}] {}'.format(key, text) for key, text in footer.items()]
+        default_footer_text = '[a] Add Row [e] Edit/View Row [r] Reverse Sort [<;>] Change Sort Column [q] Hætta'
+        self.__footer= Label(' '.join(footers) + ' ' + default_footer_text)
+
         self.add_layout(layout)
         layout.add_widget(self.__header)
         layout.add_widget(self.__search_box, column=1)
         layout.add_widget(self.__list)
+        layout.add_widget(self.__footer)
         self.fix()
 
         # Change colours

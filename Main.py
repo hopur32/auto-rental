@@ -50,21 +50,21 @@ vehicletable = Table(
 )
 
 keybinds = {
-    'c': 'customertable',
-    'o': 'ordertable',
-    'v': 'vehicletable'
+    'c': 'Customer Table',
+    'o': 'Order Table',
+    'v': 'Vehicle Table'
 }
 
 def demo(screen):
     screen.play([
-        Scene([TableFrame(screen, customertable, 'customeredit', 'Customers', scene_keybinds=keybinds)], -
-              1, name='customertable'),
-        Scene([EditFrame(screen, customertable, 'customertable')], -
+        Scene([TableFrame(screen, customertable, 'customeredit', 'Customers', scene_keybinds=keybinds, footer=keybinds)], -
+              1, name='Customer Table'),
+        Scene([EditFrame(screen, customertable, 'Customer Table')], -
               1, name='customeredit'),
-        Scene([TableFrame(screen, ordertable, 'orderedit', 'Orders', scene_keybinds=keybinds)], -1, name='ordertable'),
-        Scene([EditFrame(screen, ordertable, 'ordertable')], -1, name='orderedit'),
-        Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds)], -1, name='vehicletable'),
-        Scene([EditFrame(screen, vehicletable, 'vehicletable')], -1, name='vehicleedit')
+        Scene([TableFrame(screen, ordertable, 'orderedit', 'Orders', scene_keybinds=keybinds)], -1, name='Order Table'),
+        Scene([EditFrame(screen, ordertable, 'Order Table')], -1, name='orderedit'),
+        Scene([TableFrame(screen, vehicletable, 'vehicleedit', 'Vehicles', scene_keybinds=keybinds)], -1, name='Vehicle Table'),
+        Scene([EditFrame(screen, vehicletable, 'Vehicle Table')], -1, name='vehicleedit')
     ], stop_on_resize=True)
 
 
