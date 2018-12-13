@@ -1,6 +1,7 @@
 from UI.UserInterface import TableFrame, EditFrame
 from Domain.Table import Table
 from Data.Data import ID
+from Domain.PriceFrame import PRICE
 
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
@@ -19,14 +20,25 @@ def calc_price(row):
     start, end = row[3], row[4]
     days = (end - start).days + 1
     has_insurance, has_gps = row[5], row[6]
+    plate = row[2]
 
-    price_p_day = 3000
+    price_p_day = PRICE['Small Car']
+    for row in vehicletable.get_rows():
+        if plate in row.values():
+            if row.values()[-1].lower() in ['medium', 'medium car']:
+                price_p_day = PRICE['Medium Car']
+            elif row.values()[-1].lower() in ['large', 'large car']:
+                price_p_day = PRICE['Large Car']
+            elif row.values()[-1].lower() in ['jeep']:
+                price_p_day = PRICE['Jeep']
+            break
     if has_insurance:
-        price_p_day += 1000
+        price_p_day += PRICE['Extra insurance']
     if has_gps:
-        price_p_day += 350
+        price_p_day += PRICE['GPS']
 
     return str(price_p_day * days)
+
 ordertable = Table(
     'Orders.txt',
     ['Order ID', 'Customer', 'Vehicle', 'Start Date', 'End Date', 'Extra Insurance', 'GPS'],

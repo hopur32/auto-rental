@@ -5,7 +5,7 @@ from asciimatics.exceptions import ResizeScreenError, StopApplication
 import sys
 import os
 
-PRICE = {'Small Car':2900, 'Medium car': 3900, 'Large car': 4900, 'Jeep': 5900,
+PRICE = {'Small Car':2900, 'Medium Car': 3900, 'Large Car': 4900, 'Jeep': 5900,
 'Basic insurance': 0, 'Extra insurance': 850, 'GPS': 350}
 PRICE_LIST= [[key, '{:,} ISK'.format(value ), '{:,} ISK'.format(value*7 ), '{:,} ISK'.format(value*30 ), 
 '{:,} ISK'.format(value*182)] for key, value in PRICE.items()]
@@ -41,10 +41,10 @@ def demo(screen, old_scene):
 
 
 
-last_scene = None
-while True:
-    try:
-        Screen.wrapper(demo, catch_interrupt=False, arguments=[last_scene])
-        sys.exit(0)
-    except ResizeScreenError as e:
-        last_scene = e.scene
+#last_scene = None
+#while True:
+#    try:
+#        Screen.wrapper(demo, catch_interrupt=False, arguments=[last_scene])
+#        sys.exit(0)
+#    except ResizeScreenError as e:
+#        last_scene = e.scene
