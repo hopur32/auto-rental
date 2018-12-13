@@ -179,7 +179,7 @@ class Data():
     Updates file with contents of self.__file_path. If file does not exist,
     make self.__rows an empty list.
     """
-    def update_cache(self):
+    def update_cache(self): # Load from file
         try:
             with open(self.__file_path, "r", encoding="utf-8") as f:
                 type_names = f.readline().strip().split(self.__delim)
@@ -192,17 +192,17 @@ class Data():
                 logging.debug('{}'.format(type_names))
                 logging.debug(col_names)
 
-                rows = []
+                row_list = []
                 for line in f.readlines():
                     line = line.strip()
                     row = Row(line.split(self.__delim))
                     row.set_types(self.__col_types)
-                    rows.append(row)
-                self.set_rows(rows)
+                    row_list.append(row)
+                self.set_rows(row_list)
         except FileNotFoundError:
             self.__rows = []
 
-    def update_file(self):
+    def update_file(self): # Write to file
         with open(self.__file_path, "w+", encoding='utf-8') as f:
             lines = []
             lines.append(self.__delim.join([t.__name__ for t in self.__col_types]) + '\n')
@@ -213,7 +213,7 @@ class Data():
             # Write the lines to file
             f.writelines(lines)
 
-    def _append_row_to_file(self, row):
+    def _append_row_to_file(self, row): # Write an item to file
         with open(self.__file_path, 'a', encoding='utf-8') as f:
             line = self.__delim.join(row.constructable())
             f.write(line + '\n')
@@ -238,17 +238,17 @@ class Data():
         Raises typeerror if each column does not have the same type in every
         row.
     """
-    def set_rows(self, rows):
-        rows = [Row(row) if not isinstance(row, Row) else row for row in rows]
+    def set_rows(self, row_list):
+        row_list = [Row(item) if not isinstance(item, Row) else item for item in row_list]
 
-        if rows:
-            first_row = rows[0]
+        if row_list:
+            first_row = row_list[0]
             self.__num_cols = len(first_row)
             self.__col_types = first_row.types()
 
-            for row in rows[1:]:
+            for row in row_list[1:]:
                 self._assert_valid_row(row)
-            self.__rows = rows
+            self.__rows = row_list
         else:
             self.__rows = []
 
@@ -297,8 +297,10 @@ class Data():
             row = Row(row)
         self._assert_valid_row(row)
         self.__rows.append(row)
-        # self._append_row_to_file(row)
-        self.update_file()
+        if len(self.__rows) == 1:
+            self.update_file() # Creates new file if this is the first Row added to the system
+        else:
+            self._append_row_to_file(row) # Otherwise appends new Row to the file
 
     # Get other private attributes:
     # --------------------------------------------------------------------------
@@ -310,5 +312,3 @@ class Data():
 
     def get_num_columns(self):
         return self.__num_cols
-
-DELIM = '|'
