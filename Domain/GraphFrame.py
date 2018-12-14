@@ -6,7 +6,7 @@ from asciimatics.widgets import Frame, Layout, FileBrowser, Widget, Label, PopUp
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene
-from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 import os
 
@@ -14,6 +14,7 @@ import os
 graph_list=list()
 order_list=list()
 car_list=list()
+occupied=list()
 
 
 def get_info():
@@ -32,6 +33,9 @@ def get_info():
         order_list.append(item.values())
     for item in vehicletable.get_rows():
         car_list.append(item.values())
+    for item in ordertable.get_rows():
+        if item[3].value() <= datetime.now() < (item[4].value() + timedelta(days = 1)):
+            occupied.append(item[2].value())
 
 
 
@@ -58,8 +62,8 @@ def make_graph_list():
 
     a,n=0,0
     for row in car_list:
-        if row[4]!='Out':    a+=1
-        else:               n+=1
+        if row[0] not in occupied:    a+=1
+        else:                         n+=1
 
     cars_availability = Piechart(
         hight=7,
@@ -72,9 +76,7 @@ def make_graph_list():
     graph_list.append(cars_availability)
 
     
-    months = {}
-    for i in range(1,13):
-        months[i] = 0
+    months = [0] * 12
     for row in order_list:
         try:
             months[row[3].month] += 1
@@ -84,37 +86,45 @@ def make_graph_list():
     line_income=Linegram(
         name='Line graph of orders between months', 
         names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
-        values=[item[1] for item in sorted(months.items())]
+        values=months
     )
     line_income.update_table()
     graph_list.append(line_income)
 
-    s,m,l,j=0,0,0,0
+    hist_list = [0] * 4
     for row in car_list:
-        if row[5]=='Small' and row[4]!='Out':     s+=1
-        elif row[5]== 'Medium' and row[4]!='Out': m+=1
-        elif row[5]== 'Large' and row[4]!='Out':  l+=1
-        elif row[5]== 'Jeep'and row[4]!='Out':   j+=1
+        if row[5].lower() in ['small', "small car"] and row[0] not in occupied:     
+            hist_list[0] += 1
+        elif row[5].lower() in ['medium', "medium car"] and row[0] not in occupied: 
+            hist_list[1] += 1
+        elif row[5].lower() in ['large', "large car"] and row[0] not in occupied:  
+            hist_list[2] += 1
+        elif row[5].lower() in ['jeep'] and row[0] not in occupied:   
+            hist_list[3] += 1
 
     car_available_graph=Histogram(
         name='Histogram of all available cars in each size category', 
         names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
-        values=[s,m,l,j]
+        values=hist_list
     )
     car_available_graph.update_table()
     graph_list.append(car_available_graph)
 
-    s,m,l,j=0,0,0,0
+    hist_list = [0] * 4
     for row in car_list:
-        if row[5]=='Small' and row[4]=='Out':     s+=1
-        elif row[5]== 'Medium' and row[4]=='Out': m+=1
-        elif row[5]== 'Large' and row[4]=='Out':  l+=1
-        elif row[5]== 'Jeep'and row[4]=='Out':   j+=1
+        if row[5].lower() in ['small', "small car"] and row[0] in occupied:
+            hist_list[0] += 1
+        elif row[5].lower() in ['medium', "medium car"] and row[0] in occupied:
+            hist_list[1] += 1
+        elif row[5].lower() in ['large', "large car"] and row[0] in occupied:
+            hist_list[2] += 1
+        elif row[5].lower() in ['jeep'] and row[0] in occupied:
+            hist_list[3] += 1
 
     car_out_graph=Histogram(
         name='Histogram of all out rented cars in each size category', 
         names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
-        values=[s,m,l,j]
+        values=hist_list
     )
     car_out_graph.update_table()
     graph_list.append(car_out_graph)
