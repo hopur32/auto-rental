@@ -3,7 +3,7 @@ from Domain.Table import Table
 from Data.Data import ID, Kennitala
 from Domain.PriceFrame import PRICE, PriceFrame
 from Domain.GraphFrame import GraphFrame
-from Domain.WelcomeFrame import play_welcome
+from Domain.welcome import play_welcome
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError
