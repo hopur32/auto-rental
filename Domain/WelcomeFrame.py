@@ -5,7 +5,7 @@ from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.effects import Print, Effect, BannerText
 
-def demoWelcome(screen):
+def play_welcome(screen):
     scenes = []
 
     logo='''

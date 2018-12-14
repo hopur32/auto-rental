@@ -1,9 +1,9 @@
 from UI.UserInterface import TableFrame, EditFrame
 from Domain.Table import Table
 from Data.Data import ID, Kennitala
-from Domain.PriceFrame import PRICE,PriceFrame
+from Domain.PriceFrame import PRICE, PriceFrame
 from Domain.GraphFrame import GraphFrame
-from Domain.WelcomeFrame import demoWelcome
+from Domain.WelcomeFrame import play_welcome
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError
@@ -72,7 +72,7 @@ keybinds = {
     'g': 'Statistics'
 }
 
-def demo(screen):
+def main(screen):
     screen.play([
         Scene([TableFrame(screen, customertable, 'customeredit', 'Customers', scene_keybinds=keybinds, footer=keybinds)], -
               1, name='Customer Table'),
@@ -88,13 +88,14 @@ def demo(screen):
 
 while True:
     try:
-        Screen.wrapper(demoWelcome)
+        Screen.wrapper(play_welcome)
         break
     except ResizeScreenError:
         pass
+
 while True:
     try:
-        Screen.wrapper(demo, catch_interrupt=True)
-        exit()
+        Screen.wrapper(main, catch_interrupt=True)
+        break
     except ResizeScreenError:
         pass
