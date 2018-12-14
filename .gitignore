@@ -1,3 +1,6 @@
+# -- MacOS --
+.DS_Store
+
 # -- Vim --
 # Swap
 [._]*.s[a-v][a-z]
@@ -69,10 +72,7 @@ flycheck_*.el
 
 # -- VSCode --
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vs/*
 
 # -- Python --
 # Byte-compiled / optimized / DLL files
