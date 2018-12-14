@@ -82,9 +82,11 @@ def make_graph_list():
         except IndexError:
             pass
 
-    line_income=Linegram(name='Line graph of orders between months', 
-    names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
-    values=[item[1] for item in sorted(months.items())])
+    line_income=Linegram(
+        name='Line graph of orders between months', 
+        names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
+        values=[item[1] for item in sorted(months.items())]
+    )
     line_income.update_table()
     graph_list.append(line_income)
 
@@ -95,9 +97,11 @@ def make_graph_list():
         elif row[5]== 'Large' and row[6]:  l+=1
         elif row[5]== 'Jeep'and row[6]:   j+=1
 
-    car_available_graph=Histogram(name='Histogram of all available cars in each size category', 
-    names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
-    values=[s,m,l,j])
+    car_available_graph=Histogram(
+        name='Histogram of all available cars in each size category', 
+        names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
+        values=[s,m,l,j]
+    )
     car_available_graph.update_table()
     graph_list.append(car_available_graph)
 
@@ -108,9 +112,11 @@ def make_graph_list():
         elif row[5]== 'Large' and not row[6]:  l+=1
         elif row[5]== 'Jeep' and not row[6]:   j+=1
 
-    car_out_graph=Histogram(name='Histogram of all out rented cars in each size category', 
-    names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
-    values=[s,m,l,j])
+    car_out_graph=Histogram(
+        name='Histogram of all out rented cars in each size category', 
+        names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
+        values=[s,m,l,j]
+    )
     car_out_graph.update_table()
     graph_list.append(car_out_graph)
 
@@ -118,7 +124,12 @@ def make_graph_list():
 class GraphFrame(Frame):
     def __init__(self, screen, footer=dict(), scene_keybinds=None):
         super(GraphFrame, self).__init__(
-            screen, screen.height, screen.width, has_border=False, name="My Form")
+            screen,
+            screen.height,
+            screen.width,
+            has_border=False,
+            name="My Form"
+        )
 
         layout = Layout([1], fill_frame=True)
         self.add_layout(layout)
