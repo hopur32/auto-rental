@@ -1,5 +1,5 @@
 from Domain.Graph import Piechart, Histogram, Linegram
-from Data.Data import Data
+from Data.Data import Data, ID
 
 from asciimatics.event import KeyboardEvent
 from asciimatics.widgets import Frame, Layout, FileBrowser, Widget, Label, PopUpDialog, Text, DropdownList, TextBox
@@ -20,13 +20,13 @@ car_list=list()
 def get_info():
     vehicletable = Data(
         'Vehicles.txt',
-        ['License Plate', 'Manufacturer', 'Model', 'Year', 'Location', 'Category', 'Available'],
-        [str, str, str, int, str, str, bool]
+        ['License Plate', 'Manufacturer', 'Model', 'Year', 'Location', 'Category'],
+        [str, str, str, int, str, str]
     )
     ordertable = Data(
         'Orders.txt',
-        ['ID', 'Customer', 'Vehicle', 'Start Date', 'End Date', 'Insurance', 'Extra Objects'],
-        [str, str, str, datetime, datetime, str, str]
+        ['Order ID', 'Customer', 'Vehicle', 'Start Date', 'End Date', 'Extra Insurance', 'GPS'],
+        [ID, str, str, datetime, datetime, bool, bool]
     )
 
     for item in ordertable.get_rows():
