@@ -4,6 +4,8 @@ Return if kt is a valid kennitala.
 Notast var við eftirfarandi heimild:
 https://is.wikipedia.org/wiki/Kennitala
 '''
+
+
 def validate_kennitala(kt):
     kt = str(kt)
     if len(kt) == 0:

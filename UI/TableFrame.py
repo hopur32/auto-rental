@@ -6,7 +6,7 @@ from asciimatics.event import KeyboardEvent
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget, TextBox, Button, \
-Label, PopUpDialog, DatePicker, CheckBox
+    Label, PopUpDialog, DatePicker, CheckBox
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene, InvalidFields
 
 from data.Data import Row, ID, Kennitala
@@ -31,8 +31,8 @@ Attributes:
 
 class TableFrame(Frame):
     def __init__(self, screen, table, edit_scene,
-                 header_text='TableFrame', spacing=2, has_border=True, 
-                 footer= dict(), reverse_sort=False, sort_index=0, 
+                 header_text='TableFrame', spacing=2, has_border=True,
+                 footer=dict(), reverse_sort=False, sort_index=0,
                  scene_keybinds=None):
         self.table = table
         self.__screen = screen
@@ -46,15 +46,20 @@ class TableFrame(Frame):
             name=header_text, on_load=self._reload_list
         )
 
-
         layout = Layout([17, 3])
         # Search
+
         def searching():
             self.__searching = True
             self.data["row_index"] = None
+
         def not_searching():
             self.__searching = False
-        self.__search_box = Text(label='Search:', name='search', on_focus=searching, on_blur=not_searching)
+        self.__search_box = Text(
+            label='Search:',
+            name='search',
+            on_focus=searching,
+            on_blur=not_searching)
         self.__search_box._on_change = self._reload_list
         # Header
         self.__header = TextBox(1, as_string=True)
@@ -71,7 +76,7 @@ class TableFrame(Frame):
         )
         footers = ['[{}] {}'.format(key, text) for key, text in footer.items()]
         default_footer_text = '[a] Add Row [e] Edit/View Row [r] Reverse Sort [<;>] Change Sort Column [tab] Search [d] Delete [q] Quit'
-        self.__footer= Label(' '.join(footers) + ' ' + default_footer_text)
+        self.__footer = Label(' '.join(footers) + ' ' + default_footer_text)
 
         self.add_layout(layout)
         layout.add_widget(self.__header)
@@ -88,7 +93,8 @@ class TableFrame(Frame):
         if isinstance(event, KeyboardEvent) and not self.__searching:
             if self.__scene_keybinds:
                 for keybind, scene in self.__scene_keybinds.items():
-                    if event.key_code in [ord(keybind.lower()), ord(keybind.upper())]:
+                    if event.key_code in [
+                            ord(keybind.lower()), ord(keybind.upper())]:
                         raise NextScene(scene)
             if event.key_code in [ord('q'), ord('Q'), Screen.ctrl('c')]:
                 raise StopApplication("User quit")
@@ -105,8 +111,8 @@ class TableFrame(Frame):
                 self.__sort_index = max(0, self.__sort_index - 1)
                 self._reload_list()
             elif event.key_code == ord(">"):
-                self.__sort_index = min(self.table.get_num_columns() + len(self.table.runtime_columns) - 1,
-                                        self.__sort_index + 1)
+                self.__sort_index = min(self.table.get_num_columns(
+                ) + len(self.table.runtime_columns) - 1, self.__sort_index + 1)
                 self._reload_list()
 
         # Now pass on to lower levels for normal handling of the event.
@@ -151,7 +157,8 @@ class TableFrame(Frame):
         self._scene.add_effect(popup)
 
     def _sort_list(self):
-        self.__list.options = sorted(self.__list.options, key=lambda x: x[0][self.__sort_index],
+        self.__list.options = sorted(self.__list.options,
+                                     key=lambda x: x[0][self.__sort_index],
                                      reverse=self.__reverse_sort)
 
     def _get_sort_arrow(self):
@@ -165,7 +172,6 @@ class TableFrame(Frame):
         for name, _, _ in self.table.runtime_columns:
             column_names.append(name)
         column_widths = [len(name) for name in column_names]
-
 
         self.save()
         try:
@@ -182,14 +188,15 @@ class TableFrame(Frame):
             for col in display_row:
                 if query in col.lower():
                     rows.append(display_row)
-                    column_widths = [max(new, old) for new, old in
-                                     zip([len(c) for c in display_row], column_widths)]
+                    column_widths = [max(new, old) for new, old in zip(
+                        [len(c) for c in display_row], column_widths)]
                     break
         self.__list.options = [(row, i) for i, row in enumerate(rows)]
 
         column_widths = [w + self.__spacing for w in column_widths]
         column_widths[self.__sort_index] += len(self._get_sort_arrow())
-        column_names[self.__sort_index] = self._get_sort_arrow() + column_names[self.__sort_index]
+        column_names[self.__sort_index] = self._get_sort_arrow() + \
+            column_names[self.__sort_index]
 
         self._sort_list()
         # Here we are editing private attributes, and must thus be careful.
@@ -241,9 +248,14 @@ class EditFrame(Frame):
                 widget = Text(label=field_name, name=field_name)
                 widget.disabled = True
             elif field_type == Kennitala:
-                widget = Text(label=field_name, name=field_name, validator=validate_kennitala)
+                widget = Text(
+                    label=field_name,
+                    name=field_name,
+                    validator=validate_kennitala)
             else:
-                logging.debug('Creating normal textbox for type: {}, name: {}'.format(field_type, field_name))
+                logging.debug(
+                    'Creating normal textbox for type: {}, name: {}'.format(
+                        field_type, field_name))
                 widget = Text(label=field_name, name=field_name)
             main_layout.add_widget(widget)
 

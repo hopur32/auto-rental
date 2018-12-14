@@ -11,10 +11,10 @@ import sys
 import os
 
 
-graph_list=list()
-order_list=list()
-car_list=list()
-occupied=list()
+graph_list = list()
+order_list = list()
+car_list = list()
+occupied = list()
 
 
 def get_info():
@@ -34,18 +34,22 @@ def get_info():
     for item in vehicletable.get_rows():
         car_list.append(item.values())
     for item in ordertable.get_rows():
-        if item[3].value() <= datetime.now() < (item[4].value() + timedelta(days = 1)):
+        if item[3].value() <= datetime.now() < (
+                item[4].value() + timedelta(days=1)):
             occupied.append(item[2].value())
-
 
 
 def make_graph_list():
     sizes = [0] * 4
     for row in car_list:
-        if row[5].lower() in ['small', 'small car']:     sizes[0] += 1
-        elif row[5].lower() in ['medium', 'medium car']: sizes[1] += 1
-        elif row[5].lower() in ['large', 'large car']:  sizes[2] += 1
-        elif row[5].lower() in ['jeep']:   sizes[3] += 1
+        if row[5].lower() in ['small', 'small car']:
+            sizes[0] += 1
+        elif row[5].lower() in ['medium', 'medium car']:
+            sizes[1] += 1
+        elif row[5].lower() in ['large', 'large car']:
+            sizes[2] += 1
+        elif row[5].lower() in ['jeep']:
+            sizes[3] += 1
 
     all_cars = Piechart(
         height=7,
@@ -54,16 +58,18 @@ def make_graph_list():
             ('Medium', sizes[1]),
             ('Large', sizes[2]),
             ('Jeep', sizes[3])
-        ], 
+        ],
         name='Piechart of all cars in each size category'
     )
-    all_cars.get_chart() 
+    all_cars.get_chart()
     graph_list.append(all_cars)
 
-    a,n=0,0
+    a, n = 0, 0
     for row in car_list:
-        if row[0] not in occupied:    a+=1
-        else:                         n+=1
+        if row[0] not in occupied:
+            a += 1
+        else:
+            n += 1
 
     cars_availability = Piechart(
         height=7,
@@ -72,10 +78,9 @@ def make_graph_list():
             ('Out-rented', n)
         ],
         name='Piechart of availability of cars')
-    cars_availability.get_chart() 
+    cars_availability.get_chart()
     graph_list.append(cars_availability)
 
-    
     months = [0] * 12
     for row in order_list:
         try:
@@ -83,27 +88,38 @@ def make_graph_list():
         except IndexError:
             pass
 
-    line_income=Linegram(
-        name='Line graph of orders between months', 
-        names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
-        values=months
-    )
+    line_income = Linegram(
+        name='Line graph of orders between months',
+        names_of_x=[
+            'Jan',
+            'Feb',
+            'Mars',
+            'April',
+            'May',
+            'June',
+            'July',
+            'Agu',
+            'Sept',
+            'Okt',
+            'Nov',
+            'Dec'],
+        values=months)
     line_income.update_table()
     graph_list.append(line_income)
 
     hist_list = [0] * 4
     for row in car_list:
-        if row[5].lower() in ['small', "small car"] and row[0] not in occupied:     
+        if row[5].lower() in ['small', "small car"] and row[0] not in occupied:
             hist_list[0] += 1
-        elif row[5].lower() in ['medium', "medium car"] and row[0] not in occupied: 
+        elif row[5].lower() in ['medium', "medium car"] and row[0] not in occupied:
             hist_list[1] += 1
-        elif row[5].lower() in ['large', "large car"] and row[0] not in occupied:  
+        elif row[5].lower() in ['large', "large car"] and row[0] not in occupied:
             hist_list[2] += 1
-        elif row[5].lower() in ['jeep'] and row[0] not in occupied:   
+        elif row[5].lower() in ['jeep'] and row[0] not in occupied:
             hist_list[3] += 1
 
-    car_available_graph=Histogram(
-        name='Histogram of all available cars in each size category', 
+    car_available_graph = Histogram(
+        name='Histogram of all available cars in each size category',
         names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
         values=hist_list
     )
@@ -121,8 +137,8 @@ def make_graph_list():
         elif row[5].lower() in ['jeep'] and row[0] in occupied:
             hist_list[3] += 1
 
-    car_out_graph=Histogram(
-        name='Histogram of all out rented cars in each size category', 
+    car_out_graph = Histogram(
+        name='Histogram of all out rented cars in each size category',
         names_of_x=['Small', 'Medium', 'Large', 'Jeep'],
         values=hist_list
     )
@@ -142,21 +158,23 @@ class GraphFrame(Frame):
 
         layout = Layout([1], fill_frame=True)
         self.add_layout(layout)
-        self.__scene_keybinds= scene_keybinds
-        self._graph = TextBox(25, name='graph', as_string=True )
-        self._graph.disabled = True     
+        self.__scene_keybinds = scene_keybinds
+        self._graph = TextBox(25, name='graph', as_string=True)
+        self._graph.disabled = True
 
-        self._graph.custom_colour= 'label'
+        self._graph.custom_colour = 'label'
 
-        self._list = DropdownList(dropdown_options, label= 'Pick a graph', name='dropdown')
-        self._graph.value= str(graph_list[self._list.value])
-        
+        self._list = DropdownList(
+            dropdown_options,
+            label='Pick a graph',
+            name='dropdown')
+        self._graph.value = str(graph_list[self._list.value])
+
         self._list._on_change = self.on_change
-        
+
         footers = ['[{}] {}'.format(key, text) for key, text in footer.items()]
         default_footer_text = '[q] Quit'
-        self.__footer= Label(' '.join(footers) + ' ' + default_footer_text)
-
+        self.__footer = Label(' '.join(footers) + ' ' + default_footer_text)
 
         layout.add_widget(self._list)
         layout.add_widget(self._graph)
@@ -165,18 +183,18 @@ class GraphFrame(Frame):
         self.set_theme('monochrome')
 
         self.fix()
- 
+
     def on_change(self):
         self.save()
-        n=self.data['dropdown']
+        n = self.data['dropdown']
         self._graph.value = str(graph_list[n])
-
 
     def process_event(self, event):
         if isinstance(event, KeyboardEvent):
             if self.__scene_keybinds:
                 for keybind, scene in self.__scene_keybinds.items():
-                    if event.key_code in [ord(keybind.lower()), ord(keybind.upper())]:
+                    if event.key_code in [
+                            ord(keybind.lower()), ord(keybind.upper())]:
                         raise NextScene(scene)
             if event.key_code in [ord('q'), ord('Q'), Screen.ctrl("c")]:
                 raise StopApplication("User quit")
@@ -186,4 +204,4 @@ class GraphFrame(Frame):
 
 get_info()
 make_graph_list()
-dropdown_options=[(graph_list[i].name, i) for i in range(len(graph_list))]
+dropdown_options = [(graph_list[i].name, i) for i in range(len(graph_list))]

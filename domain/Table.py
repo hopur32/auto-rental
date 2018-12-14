@@ -76,7 +76,8 @@ class Table(Data):
             self.__col_widths = widths
         # Maybe the column name is larger than every one of the values in the
         # column:
-        self._update_column_widths([len(name) for name in super().get_column_names()])
+        self._update_column_widths([len(name)
+                                    for name in super().get_column_names()])
 
     def _update_column_widths(self, new_row_widths):
         try:

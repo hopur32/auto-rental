@@ -4,8 +4,8 @@ class Graph:
                  names_of_x=['A', 'B', 'C'],
                  values=[17, 21, 35], yspace=2, size=15):
 
-        self.names_of_x, self.values= names_of_x, values
-        self.name=name
+        self.names_of_x, self.values = names_of_x, values
+        self.name = name
 
         self.size = size
 
@@ -16,11 +16,11 @@ class Graph:
 
         whole_number = self.maxvalue // (self.size)
         self.maxlen = self.find_max_len()
-        self.xspace = self.maxlen+1
+        self.xspace = self.maxlen + 1
         self.lentapel = (len(self.names_of_x)) * self.xspace * 2
     # Find jump
-        if self.maxvalue==0:
-            self.jump =1
+        if self.maxvalue == 0:
+            self.jump = 1
         elif (whole_number) < (self.maxvalue / (self.size)):
             self.jump = whole_number + 1
         else:
@@ -56,8 +56,6 @@ class Graph:
                 string0 += letter[0]
             string1 += string0 + '\n'
         return string1
-    
-
 
 
 class Histogram(Graph):
@@ -241,7 +239,7 @@ class Piechart:
 
         self.height, self.length, self.stuff_in_piechart = height, length, stuff_in_piechart
         self.character_list = character_list
-        self.name=name
+        self.name = name
         self.table = name + '\n\n'
 
         list_length = [item[1] for item in self.stuff_in_piechart]

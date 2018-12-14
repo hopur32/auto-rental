@@ -10,11 +10,26 @@ from asciimatics.exceptions import ResizeScreenError
 
 from datetime import datetime, timedelta
 
-customertable = Table(
-    'Customers.txt',
-    ['Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Nationality'],
-    [Kennitala, str, str, str, str, datetime, str, datetime, str]
-)
+customertable = Table('Customers.txt',
+                      ['Kennitala',
+                       'First Name',
+                       'Last name',
+                       'Phone Nr.',
+                       'Email',
+                       'DOB',
+                       'Credit Card',
+                       'Expiration Date',
+                       'Nationality'],
+                      [Kennitala,
+                       str,
+                       str,
+                       str,
+                       str,
+                       datetime,
+                       str,
+                       datetime,
+                       str])
+
 
 def calc_price(row):
     row = row.values()
@@ -40,6 +55,7 @@ def calc_price(row):
 
     return str(price_p_day * days)
 
+
 ordertable = Table(
     'Orders.txt',
     ['Order ID', 'Customer', 'Vehicle', 'Start Date', 'End Date', 'Extra Insurance', 'GPS'],
@@ -47,15 +63,18 @@ ordertable = Table(
     runtime_columns=[('Price', calc_price, [])]
 )
 
+
 def is_taken(row, order_table):
     order_table.update_cache()
     my_plate = row.display()[0]
     for order in order_table.get_rows():
         order_plate = order.display()[2]
         start_date, end_date = order[3].value(), order[4].value()
-        if order_plate == my_plate and start_date <= datetime.now() < (end_date + timedelta(days = 1)):
+        if order_plate == my_plate and start_date <= datetime.now() < (end_date + \
+                                                                  timedelta(days=1)):
             return 'True'
     return 'False'
+
 
 vehicletable = Table(
     'Vehicles.txt',
@@ -72,6 +91,7 @@ keybinds = {
     'g': 'Statistics'
 }
 
+
 def main(screen):
     screen.play([
         Scene([TableFrame(screen, customertable, 'customeredit', 'Customers', scene_keybinds=keybinds, footer=keybinds)], -
@@ -85,6 +105,7 @@ def main(screen):
         Scene([PriceFrame(screen, footer=keybinds, scene_keybinds=keybinds)], -1, name='Price List'),
         Scene([GraphFrame(screen, footer=keybinds, scene_keybinds=keybinds)], -1, name='Statistics')
     ], stop_on_resize=True)
+
 
 while True:
     try:
