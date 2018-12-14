@@ -58,25 +58,19 @@ def make_graph_list():
     cars_availability.get_chart() 
     graph_list.append(cars_availability)
 
-    j,f,m,a,m1,j1,j2,a1,s,o,n,d=0,0,0,0,0,0,0,0,0,0,0,0
+    
+    months = {}
+    for i in range(1,13):
+        months[i] = 0
     for row in order_list:
-        if row[3].month== 1:      j+=1
-        elif row[3].month== 2:    f+=1
-        elif row[3].month== 3:    m+=1
-        elif row[3].month== 4:    a+=1
-        elif row[3].month== 5:    m1+=1
-        elif row[3].month== 6:    j1+=1
-        elif row[3].month== 7:    j2+=1
-        elif row[3].month== 8:    a1+=1
-        elif row[3].month== 9:    s+=1
-        elif row[3].month== 10:   o+=1
-        elif row[3].month== 11:   n+=1
-        elif row[3].month== 12:   d+=1
-
+        try:
+            months[row[3].month] += 1
+        except IndexError:
+            pass
 
     line_income=Linegram(name='Line graph of orders between months', 
     names_of_x=['Jan', 'Feb', 'Mars', 'April', 'May', 'June', 'July', 'Agu', 'Sept', 'Okt', 'Nov', 'Dec'],
-    values=[j,f,m,a,m1,j1,j2,a1,s,o,n,d])
+    values=[item[1] for item in sorted(months.items())])
     line_income.update_table()
     graph_list.append(line_income)
 
