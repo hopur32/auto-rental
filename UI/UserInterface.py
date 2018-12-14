@@ -9,7 +9,8 @@ from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget,
 Label, PopUpDialog, DatePicker, CheckBox
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene, InvalidFields
 
-from Data.Data import Row, ID
+from Data.Data import Row, ID, Kennitala
+from Domain.validators import validate_kennitala
 
 import logging
 from metadata import LOGGING_DIR
@@ -239,6 +240,8 @@ class EditFrame(Frame):
             elif field_type == ID:
                 widget = Text(label=field_name, name=field_name)
                 widget.disabled = True
+            elif field_type == Kennitala:
+                widget = Text(label=field_name, name=field_name, validator=validate_kennitala)
             else:
                 logging.debug('Creating normal textbox for type: {}, name: {}'.format(field_type, field_name))
                 widget = Text(label=field_name, name=field_name)

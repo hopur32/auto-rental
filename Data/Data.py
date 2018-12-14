@@ -151,6 +151,24 @@ class ID:
     def __eq__(self, other):
         return self.__value == other.__value
 
+class Kennitala:
+    def __init__(self, *args):
+        num_args = len(args)
+        if num_args == 0:
+            self.__value = ''
+        elif num_args == 1:
+            self.__value = args[0]
+        else:
+            raise TypeError('Bad number of arguments; 0 or 1 expected, {} given'.format(
+                num_args
+            ))
+
+    def __str__(self):
+        return str(self.__value)
+
+    def __eq__(self, other):
+        return self.__value == other.__value
+
 """
 Arguments:
 

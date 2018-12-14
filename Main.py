@@ -1,6 +1,6 @@
 from UI.UserInterface import TableFrame, EditFrame
 from Domain.Table import Table
-from Data.Data import ID
+from Data.Data import ID, Kennitala
 from Domain.PriceFrame import PRICE,PriceFrame
 from Domain.GraphFrame import GraphFrame
 from Domain.WelcomeFrame import demoWelcome
@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 customertable = Table(
     'Customers.txt',
     ['Kennitala', 'First Name', 'Last name', 'Phone Nr.', 'Email', 'DOB', 'Credit Card', 'Expiration Date', 'Nationality'],
-    [str, str, str, str, str, datetime, str, datetime, str]
+    [Kennitala, str, str, str, str, datetime, str, datetime, str]
 )
 
 def calc_price(row):
