@@ -5,6 +5,10 @@ Notast var við eftirfarandi heimild:
 https://is.wikipedia.org/wiki/Kennitala
 '''
 def validate_kennitala(kt):
+    kt = str(kt)
+    if not len(kt) == 10:
+        return False
+
     VALIDATON_CONSTANTS = [3, 2, 7, 6, 5, 4, 3, 2, 1]
     try:
         digits = [int(char) for char in kt]
