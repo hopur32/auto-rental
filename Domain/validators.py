@@ -6,6 +6,8 @@ https://is.wikipedia.org/wiki/Kennitala
 '''
 def validate_kennitala(kt):
     kt = str(kt)
+    if len(kt) == 0:
+        return True
     if not len(kt) == 10:
         return False
 
