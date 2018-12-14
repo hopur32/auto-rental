@@ -68,7 +68,7 @@ class TableFrame(Frame):
             name='row_index'
         )
         footers = ['[{}] {}'.format(key, text) for key, text in footer.items()]
-        default_footer_text = '[a] Add Row [e] Edit/View Row [r] Reverse Sort [<;>] Change Sort Column [q] Quit'
+        default_footer_text = '[a] Add Row [e] Edit/View Row [r] Reverse Sort [<;>] Change Sort Column [d] Delete [q] Quit'
         self.__footer= Label(' '.join(footers) + ' ' + default_footer_text)
 
         self.add_layout(layout)
