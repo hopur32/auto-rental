@@ -37,15 +37,23 @@ def get_info():
 
 
 def make_graph_list():
-    s,m,l,j=0,0,0,0
+    sizes = [0] * 4
     for row in car_list:
-        if row[5]=='Small':     s+=1
-        elif row[5]== 'Medium': m+=1
-        elif row[5]== 'Large':  l+=1
-        elif row[5]== 'Jeep':   j+=1
+        if row[5].lower() in ['small', 'small car']:     sizes[0] += 1
+        elif row[5].lower() in ['medium', 'medium car']: sizes[1] += 1
+        elif row[5].lower() in ['large', 'large car']:  sizes[2] += 1
+        elif row[5].lower() in ['jeep']:   sizes[3] += 1
 
-    all_cars = Piechart(hight=7, stuff_in_piechart=[('Small', s),('Medium', m), ('Large', l), ('Jeep', j)], 
-    name='Piechart of all cars in each size category')
+    all_cars = Piechart(
+        hight=7,
+        stuff_in_piechart=[
+            ('Small', sizes[0]),
+            ('Medium', sizes[1]),
+            ('Large', sizes[2]),
+            ('Jeep', sizes[3])
+        ], 
+        name='Piechart of all cars in each size category'
+    )
     all_cars.get_chart() 
     graph_list.append(all_cars)
 
@@ -54,7 +62,13 @@ def make_graph_list():
         if row[6]==True:    a+=1
         else:               n+=1
 
-    cars_availability = Piechart(hight=7, stuff_in_piechart=[('Available', a),('Out-rented', n)], name='Piechart of cars availability')
+    cars_availability = Piechart(
+        hight=7,
+        stuff_in_piechart=[
+            ('Available', a),
+            ('Out-rented', n)
+        ],
+        name='Piechart of availability of cars')
     cars_availability.get_chart() 
     graph_list.append(cars_availability)
 
