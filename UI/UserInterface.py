@@ -50,6 +50,7 @@ class TableFrame(Frame):
         # Search
         def searching():
             self.__searching = True
+            self.data["row_index"] = None
         def not_searching():
             self.__searching = False
         self.__search_box = Text(label='Search:', name='search', on_focus=searching, on_blur=not_searching)
