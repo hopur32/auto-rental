@@ -24,9 +24,6 @@ def demoWelcome(screen):
     Welcome='Welcome to this program\npress x to continue'
 
     effects = [
-        BannerText(screen,       #Nafn myndar, hæð myndar, background litur(Svartur), Fill image), staðsettning
-                   ColourImageFile(screen, "car.png", 10, 0, True),
-                   (screen.height-8), Screen.COLOUR_WHITE),
         Print(screen, StaticRenderer(images=[logo]), 2),
         Print( screen, FigletText('Car Rental', font= 'big'), 14),
         Print( screen, FigletText('The BEST!', font= 'small'), 20, colour=Screen.COLOUR_GREEN),
