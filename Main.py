@@ -1,4 +1,4 @@
-from UI.UserInterface import TableFrame, EditFrame
+from UI.TableFrame import TableFrame, EditFrame
 from Domain.Table import Table
 from Data.Data import ID, Kennitala
 from UI.PriceFrame import PRICE, PriceFrame
