@@ -1,8 +1,8 @@
 from UI.UserInterface import TableFrame, EditFrame
 from Domain.Table import Table
 from Data.Data import ID, Kennitala
-from Domain.PriceFrame import PRICE, PriceFrame
-from Domain.GraphFrame import GraphFrame
+from UI.PriceFrame import PRICE, PriceFrame
+from UI.GraphFrame import GraphFrame
 from Domain.welcome import play_welcome
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
