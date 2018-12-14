@@ -21,3 +21,5 @@ And that's it.
 You've successfully installed and set up the Auto-Rental system and are good for business.
 To launch the program simply run the 'Main.py' file.
 I'd recommend creating a desktop shortcut for ease of access. (right-click Main.py > Send To > Desktop) (Feel free to rename the shortcut)
+
+(The example files can be moved into AppData\Local\hopur-32\Auto-Rental and renamed into [Orders.txt, Customers.txt, Vehicles.txt] for testing purposes)
