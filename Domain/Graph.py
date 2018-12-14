@@ -234,12 +234,12 @@ class Linegram(Graph):
 
 
 class Piechart:
-    def __init__(self, hight=3, length=50,
+    def __init__(self, height=3, length=50,
                  stuff_in_piechart=[('A', 10), ('B', 15), ('C', 10)],
                  character_list='░▒▓█▘╳╬♥♣♦♠#_XO',
                  name='Name of chart'):
 
-        self.hight, self.length, self.stuff_in_piechart = hight, length, stuff_in_piechart
+        self.height, self.length, self.stuff_in_piechart = height, length, stuff_in_piechart
         self.character_list = character_list
         self.name=name
         self.table = name + '\n\n'
@@ -253,7 +253,7 @@ class Piechart:
                 self.character_list[num], self.stuff_in_piechart[num][0]))
         self.table += '\n'
 
-        for i in range(self.hight):
+        for i in range(self.height):
             for num in range(len(self.stuff_in_piechart)):
 
                 quantity = self.stuff_in_piechart[num][1]
