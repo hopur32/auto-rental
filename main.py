@@ -1,9 +1,9 @@
 from UI.TableFrame import TableFrame, EditFrame
-from Domain.Table import Table
-from Data.Data import ID, Kennitala
+from domain.Table import Table
+from data.Data import ID, Kennitala
 from UI.PriceFrame import PRICE, PriceFrame
 from UI.GraphFrame import GraphFrame
-from Domain.welcome import play_welcome
+from domain.welcome import play_welcome
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError

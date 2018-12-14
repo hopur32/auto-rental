@@ -9,8 +9,8 @@ from asciimatics.widgets import MultiColumnListBox, Text, Frame, Layout, Widget,
 Label, PopUpDialog, DatePicker, CheckBox
 from asciimatics.exceptions import ResizeScreenError, StopApplication, NextScene, InvalidFields
 
-from Data.Data import Row, ID, Kennitala
-from Domain.validators import validate_kennitala
+from data.Data import Row, ID, Kennitala
+from domain.validators import validate_kennitala
 
 import logging
 from metadata import LOGGING_DIR

@@ -1,5 +1,5 @@
-from Domain.Graph import Piechart, Histogram, Linegram
-from Data.Data import Data, ID
+from domain.graphing import Piechart, Histogram, Linegram
+from data.Data import Data, ID
 
 from asciimatics.event import KeyboardEvent
 from asciimatics.widgets import Frame, Layout, FileBrowser, Widget, Label, PopUpDialog, Text, DropdownList, TextBox
