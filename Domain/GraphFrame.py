@@ -48,7 +48,7 @@ def make_graph_list():
         elif row[5].lower() in ['jeep']:   sizes[3] += 1
 
     all_cars = Piechart(
-        hight=7,
+        height=7,
         stuff_in_piechart=[
             ('Small', sizes[0]),
             ('Medium', sizes[1]),
@@ -66,7 +66,7 @@ def make_graph_list():
         else:                         n+=1
 
     cars_availability = Piechart(
-        hight=7,
+        height=7,
         stuff_in_piechart=[
             ('Available', a),
             ('Out-rented', n)
