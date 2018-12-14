@@ -8,7 +8,7 @@ from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 customertable = Table(
     'Customers.txt',
@@ -52,9 +52,11 @@ def is_taken(row, order_table):
     my_plate = row.display()[0]
     for order in order_table.get_rows():
         order_plate = order.display()[2]
-        if order_plate == my_plate:
+        start_date, end_date = order[3].value(), order[4].value()
+        if order_plate == my_plate and start_date <= datetime.now() < (end_date + timedelta(days = 1)):
             return 'True'
     return 'False'
+
 vehicletable = Table(
     'Vehicles.txt',
     ['License Plate', 'Manufacturer', 'Model', 'Year', 'Location', 'Category'],
