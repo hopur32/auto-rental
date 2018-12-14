@@ -13,7 +13,6 @@ import os
 
 graph_list=list()
 order_list=list()
-customer_list=list()
 car_list=list()
 
 
@@ -59,7 +58,7 @@ def make_graph_list():
 
     a,n=0,0
     for row in car_list:
-        if row[6]==True:    a+=1
+        if row[4]!='Out':    a+=1
         else:               n+=1
 
     cars_availability = Piechart(
@@ -92,10 +91,10 @@ def make_graph_list():
 
     s,m,l,j=0,0,0,0
     for row in car_list:
-        if row[5]=='Small' and row[6]:     s+=1
-        elif row[5]== 'Medium' and row[6]: m+=1
-        elif row[5]== 'Large' and row[6]:  l+=1
-        elif row[5]== 'Jeep'and row[6]:   j+=1
+        if row[5]=='Small' and row[4]!='Out':     s+=1
+        elif row[5]== 'Medium' and row[4]!='Out': m+=1
+        elif row[5]== 'Large' and row[4]!='Out':  l+=1
+        elif row[5]== 'Jeep'and row[4]!='Out':   j+=1
 
     car_available_graph=Histogram(
         name='Histogram of all available cars in each size category', 
@@ -107,10 +106,10 @@ def make_graph_list():
 
     s,m,l,j=0,0,0,0
     for row in car_list:
-        if row[5]=='Small' and not row[6]:     s+=1
-        elif row[5]== 'Medium' and not row[6]: m+=1
-        elif row[5]== 'Large' and not row[6]:  l+=1
-        elif row[5]== 'Jeep' and not row[6]:   j+=1
+        if row[5]=='Small' and row[4]=='Out':     s+=1
+        elif row[5]== 'Medium' and row[4]=='Out': m+=1
+        elif row[5]== 'Large' and row[4]=='Out':  l+=1
+        elif row[5]== 'Jeep'and row[4]=='Out':   j+=1
 
     car_out_graph=Histogram(
         name='Histogram of all out rented cars in each size category', 
@@ -175,7 +174,6 @@ class GraphFrame(Frame):
         return super(GraphFrame, self).process_event(event)
 
 
-
-make_graph_list()
 get_info()
+make_graph_list()
 dropdown_options=[(graph_list[i].name, i) for i in range(len(graph_list))]
