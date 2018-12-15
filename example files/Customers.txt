@@ -1,0 +1,10 @@
+Kennitala|str|str|str|str|datetime|str|datetime|str
+Kennitala|First Name|Last name|Phone Nr.|Email|DOB|Credit Card|Expiration Date|Nationality
+1506992079|Viktor|Máni|7779804|Viktorj18@ru.is|1999,6,15,23,41,19,622001|1122 3344 5566 7788|2022,12,14,23,41,19,622001|Icelandic
+0508997489|Eva Ósk|Gunnarsdóttir|6613313|evag18@ru.is|1999,8,5,23,42,55,735775|1248 1632 6412 8256|2034,2,1,23,42,55,735775|Icelandic
+|Steve|Jobs|4567982|God@Apple.com|1960,8,15,23,44,47,472035|1122 3344 5566 7788|2018,12,14,23,44,47,472035|American
+|St.|Patrick|1|st@patty.ie|2016,12,14,23,46,35,742479||2018,12,14,23,46,35,742479|Irish
+|Sinter|Klaus|7887878787|North@Pole.com|1970,12,24,23,47,42,410543|Hoho hoho hoho hoho|2018,12,24,23,47,42,410543|Dutch
+|Björgvin B.|Björgvinsson|REDACTED|REDACTED|1970,1,1,23,48,34,664898|REDACTED|1970,1,1,23,48,34,664898|REDACTED
+0608992079|Emil Trausti|Smyrilsson|7881773|emil18@ru.is|1999,8,6,23,49,35,9940|1123 5813 2134 5589|2024,9,1,23,49,35,9940|Icelandic
+3110002920|Árni Dagur|Guðmunds.|7772035|Arnig18@ru.is|2000,10,31,23,51,54,50378|4568 2315 4568 2316|2018,12,14,23,51,54,50378|Icelandic

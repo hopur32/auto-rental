@@ -1,0 +1,9 @@
+str|str|str|int|str|str
+License Plate|Manufacturer|Model|Year|Location|Category
+XGF67|Tesla|Model S|2017|Hfj|Medium Car
+SGZ33|Hyoundai|I30|2000|Hfj|Large
+UDA39|Toyota|Yaris|2017|Rvk|Small Car
+URN30|Hyoundai|I20|2015|Hfj|Medium Car
+JCR59|Renault|Modus|2006|Rvk|Medium Car
+SEX69|ur|mom|1969|Anywhere|Large
+ABC12|Ford|Fenris|2050|Kef|Small Car
